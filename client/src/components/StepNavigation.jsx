@@ -3,7 +3,6 @@ import { useFormContext, useFormState, useWatch } from "react-hook-form";
 
 export default function StepNavigation({
   currentStep,
-  steps,
   stepFields,
   onPrev,
   onNext,
@@ -11,8 +10,8 @@ export default function StepNavigation({
   isSubmitting, // ✅ NEW prop
 }) {
   const { control, getValues, trigger } = useFormContext();
-  const watchedValues = useWatch({ control });
-  const { errors } = useFormState({ control });
+  const _watchedValues = useWatch({ control });
+  const { _errors } = useFormState({ control });
 
   const isStepValid = () => {
     const fieldsToCheck = stepFields[currentStep];
