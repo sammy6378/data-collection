@@ -88,3 +88,15 @@ export const createData = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
+
+// get data submissions
+export const getData = async (req: Request, res: Response) => {
+  try {
+    const data = await DataModel.find();
+    res.status(200).json({ success: true, data });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+}

@@ -19,7 +19,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:7071/api/getsubmissions")
+    fetch("http://localhost:8000/api/v1/get-data")
   .then((res) => res.json())
   .then((data) => {
     const sorted = data.data.sort((a, b) => new Date(b._ts) - new Date(a._ts));

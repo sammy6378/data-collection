@@ -7,12 +7,12 @@ export default function FileUploadSection() {
   const { register, setValue, watch, formState: { errors } } = useFormContext();
   const [fileName, setFileName] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [_uploadProgress, setUploadProgress] = useState(0);
   const [uploadedUrl, setUploadedUrl] = useState(null);
   const [uploadError, setUploadError] = useState(null);
   
   const file = watch("cv");
-  const cvFile = watch("cvFile"); // This will store the Cloudinary URL
+  const _cvFile = watch("cvFile"); // This will store the Cloudinary URL
 
   const {
     ref: inputRef,
