@@ -27,7 +27,7 @@ app.use(
 );
 
 // routes
-app.use("/api/v1", dataRouter);
+app.use("/", dataRouter);
 
 //test
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
