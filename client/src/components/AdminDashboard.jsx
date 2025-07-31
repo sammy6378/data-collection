@@ -4,6 +4,47 @@ import { Link } from "react-router-dom";
 import { Home } from "lucide-react";
 import Footer from "./Footer"
 
+// Utility function to format date
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  
+  // Handle invalid dates
+  if (isNaN(date.getTime())) {
+    return "Invalid Date";
+  }
+  
+  // Get day with suffix
+  const day = date.getDate();
+  const daySuffix = (day) => {
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+      case 1: return 'st';
+      case 2: return 'nd';
+      case 3: return 'rd';
+      default: return 'th';
+    }
+  };
+  
+  // Get month name
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const month = months[date.getMonth()];
+  
+  // Get year
+  const year = date.getFullYear();
+  
+  // Get time in 12-hour format
+  let hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // 0 should be 12
+  
+  return `${day}${daySuffix(day)} ${month}, ${year} ${hours}:${minutes}${ampm} EAT`;
+};
+
 const AdminDashboard = () => {
   const [submissions, setSubmissions] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -19,10 +60,10 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:8000/api/v1/get-data")
+    fetch("http://localhost:8000/api/v1/data/get-data")
   .then((res) => res.json())
   .then((data) => {
-    const sorted = data.data.sort((a, b) => new Date(b._ts) - new Date(a._ts));
+    const sorted = data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     setSubmissions(sorted);
     setFiltered(sorted);
     setLoading(false);
@@ -130,25 +171,21 @@ const AdminDashboard = () => {
                     <td className="p-3">{item.jobType}</td>
                     <td className="p-3">{item.educationLevel}</td>
                     <td className="p-3">
-                      {new Date(item._ts * 1000).toLocaleString("en-KE", {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true,
-                        timeZoneName: "short",
-                      })}
+                      {formatDate(item.createdAt)}
                     </td>
                     <td className="p-3">
-                      <a
-                        href={item.cvBlobUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
-                      >
-                        Download
-                      </a>
+                      {item.cvFile ? (
+                        <a
+                          href={item.cvFile}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
+                        >
+                          Download CV
+                        </a>
+                      ) : (
+                        <span className="text-gray-400">No CV</span>
+                      )}
                     </td>
                     <td className="p-3 text-center">
                       <button
