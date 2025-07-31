@@ -52,7 +52,7 @@ export default function FormWrapper() {
     setIsSubmitting(true); // ✅ Start spinner
 
     try {
-      const res = await fetch(`${url}/create`, {
+      const res = await fetch(`${url}/api/v1/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

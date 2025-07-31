@@ -64,7 +64,7 @@ const AdminDashboard = () => {
   // Function to fetch data
   const fetchData = () => {
     setLoading(true);
-    fetch(`${url}/get-data`)
+    fetch(`${url}/api/v1/get-data`)
       .then((res) => res.json())
       .then((data) => {
         const sorted = data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
