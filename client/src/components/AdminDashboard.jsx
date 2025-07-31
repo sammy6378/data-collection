@@ -59,11 +59,12 @@ const AdminDashboard = () => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const url = import.meta.env.VITE_API_URL;
 
   // Function to fetch data
   const fetchData = () => {
     setLoading(true);
-    fetch("http://localhost:8000/api/v1/get-data")
+    fetch(`${url}/get-data`)
       .then((res) => res.json())
       .then((data) => {
         const sorted = data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));

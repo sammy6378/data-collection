@@ -23,7 +23,7 @@ export default function FormWrapper() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false); // ✅ NEW state
   const isLastStep = currentStep === steps.length - 1;
-
+  const url = import.meta.env.VITE_API_URL;
   const onSubmit = async (data) => {
     console.log("Form data before submission:", data);
     
@@ -52,7 +52,7 @@ export default function FormWrapper() {
     setIsSubmitting(true); // ✅ Start spinner
 
     try {
-      const res = await fetch("http://localhost:8000/api/v1/create", {
+      const res = await fetch(`${url}/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
