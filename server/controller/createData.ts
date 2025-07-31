@@ -26,7 +26,7 @@ export const createData = async (req: Request, res: Response) => {
       educationLevel,
       qualifications, // optional
       otherEducation, // optional
-      otherSkills,  
+      otherSkills,
       experienceSummary,
       experienceList,
       cvFile,
@@ -42,10 +42,7 @@ export const createData = async (req: Request, res: Response) => {
       !section ||
       !location ||
       !country ||
-        !school ||
-        !qualifications ||
-        !otherEducation ||
-        !otherSkills ||
+      !school ||
       !educationLevel ||
       !experienceSummary ||
       !experienceList ||
@@ -54,7 +51,10 @@ export const createData = async (req: Request, res: Response) => {
     ) {
       return res
         .status(400)
-        .json({ success: false, message: "All fields are required" });
+        .json({
+          success: false,
+          message: "All required fields must be provided",
+        });
     }
 
     // Create a new data entry
@@ -69,26 +69,23 @@ export const createData = async (req: Request, res: Response) => {
       country,
       school,
       educationLevel,
-        qualifications,
-        otherEducation,
-        otherSkills,
+      qualifications,
+      otherEducation,
+      otherSkills,
       experienceSummary,
-        experienceList,
+      experienceList,
       cvFile,
     });
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Data created successfully",
-        data: saved,
-      });
+    res.status(201).json({
+      success: true,
+      message: "Data created successfully",
+      data: saved,
+    });
   } catch (error) {
     console.error("Error creating data:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
-
 
 // get data submissions
 export const getData = async (req: Request, res: Response) => {
@@ -99,4 +96,4 @@ export const getData = async (req: Request, res: Response) => {
     console.error("Error fetching data:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
-}
+};
