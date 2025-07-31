@@ -24,6 +24,7 @@ export default function FormWrapper() {
   const [isSubmitting, setIsSubmitting] = useState(false); // ✅ NEW state
   const isLastStep = currentStep === steps.length - 1;
   const url = import.meta.env.VITE_API_URL;
+  console.log("API URL:", url);
   const onSubmit = async (data) => {
     console.log("Form data before submission:", data);
     
