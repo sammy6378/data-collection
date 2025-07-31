@@ -52,28 +52,46 @@ const AdminDashboard = () => {
   const [eduFilter, setEduFilter] = useState("");
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true); // ✅ loading state
+  const [autoRefresh, setAutoRefresh] = useState(true); // ✅ auto refresh toggle
+  const [lastUpdated, setLastUpdated] = useState(null); // ✅ last update time
 
   // Pagination
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
 
-  useEffect(() => {
+  // Function to fetch data
+  const fetchData = () => {
     setLoading(true);
-    fetch("http://localhost:8000/api/v1/data/get-data")
-  .then((res) => res.json())
-  .then((data) => {
-    const sorted = data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    setSubmissions(sorted);
-    setFiltered(sorted);
-    setLoading(false);
-  })
-
+    fetch("http://localhost:8000/api/v1/get-data")
+      .then((res) => res.json())
+      .then((data) => {
+        const sorted = data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setSubmissions(sorted);
+        setFiltered(sorted);
+        setLastUpdated(new Date());
+        setLoading(false);
+      })
       .catch((err) => {
         console.error("❌ Fetch error:", err);
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
+
+  // Auto refresh effect
+  useEffect(() => {
+    if (!autoRefresh) return;
+
+    const interval = setInterval(() => {
+      fetchData();
+    }, 30000); // Refresh every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [autoRefresh]);
 
   useEffect(() => {
     const filteredData = submissions.filter((sub) => {
@@ -113,6 +131,33 @@ const AdminDashboard = () => {
     Staff Data Submissions
   </h2>
 </div>
+
+      {/* Auto Refresh Controls */}
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+        <div className="flex items-center gap-4">
+          <label className="flex items-center gap-2 text-sm text-gray-700">
+            <input
+              type="checkbox"
+              checked={autoRefresh}
+              onChange={(e) => setAutoRefresh(e.target.checked)}
+              className="rounded border-gray-300 focus:ring-2 focus:ring-blue-500"
+            />
+            Auto-refresh (30s)
+          </label>
+          <button
+            onClick={fetchData}
+            disabled={loading}
+            className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition disabled:opacity-50"
+          >
+            {loading ? "Refreshing..." : "Refresh Now"}
+          </button>
+        </div>
+        {lastUpdated && (
+          <div className="text-xs text-gray-500">
+            Last updated: {formatDate(lastUpdated.toISOString())}
+          </div>
+        )}
+      </div>
 
 
 
