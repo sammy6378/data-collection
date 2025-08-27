@@ -34,7 +34,9 @@ export default function PersonalInfoSection() {
 
   const schoolOptions =
     selectedDept && selectedSection
-      ? data.schoolsByDeptSection[selectedDept]?.[normalizedSection(selectedSection)] || []
+      ? data.schoolsByDeptSection[selectedDept]?.[
+          normalizedSection(selectedSection)
+        ] || []
       : [];
 
   // Reset downstream fields when upstream changes
@@ -81,8 +83,16 @@ export default function PersonalInfoSection() {
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <FormInput label="Name" name="name" rules={personalInfoValidation.name} />
-        <FormInput label="Job Title" name="jobTitle" rules={personalInfoValidation.jobTitle} />
+        <FormInput
+          label="Name"
+          name="name"
+          rules={personalInfoValidation.name}
+        />
+        <FormInput
+          label="Job Title"
+          name="jobTitle"
+          rules={personalInfoValidation.jobTitle}
+        />
 
         {/* Job Type */}
         <div>
@@ -100,7 +110,9 @@ export default function PersonalInfoSection() {
             <option value="Volunteer">Volunteer</option>
           </select>
           {errors.jobType && (
-            <p className="text-red-600 text-sm mt-1">{errors.jobType.message}</p>
+            <p className="text-red-600 text-sm mt-1">
+              {errors.jobType.message}
+            </p>
           )}
         </div>
 
@@ -128,66 +140,71 @@ export default function PersonalInfoSection() {
             ))}
           </select>
           {errors.department && (
-            <p className="text-red-600 text-sm mt-1">{errors.department.message}</p>
+            <p className="text-red-600 text-sm mt-1">
+              {errors.department.message}
+            </p>
           )}
         </div>
 
-      {/* Section */}
-<div>
-  <label className="block font-medium text-gray-700 mb-1">
-    Section <span className="text-red-500">*</span>
-  </label>
-  <select
-    {...register("section", personalInfoValidation.section)}
-    className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500"
-    disabled={!selectedDept}
-    defaultValue=""
-  >
-    <option value="">
-      {selectedDept ? "Select Section" : "Select Department first"}
-    </option>
-    {sectionOptions.map((sec) => (
-      <option key={sec} value={sec}>
-        {sec}
-      </option>
-    ))}
-  </select>
-  {errors.section && (
-    <p className="text-red-600 text-sm mt-1">{errors.section.message}</p>
-  )}
-</div>
+        {/* Section */}
+        <div>
+          <label className="block font-medium text-gray-700 mb-1">
+            Section <span className="text-red-500">*</span>
+          </label>
+          <select
+            {...register("section", personalInfoValidation.section)}
+            className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+            disabled={!selectedDept}
+            defaultValue=""
+          >
+            <option value="">
+              {selectedDept ? "Select Section" : "Select Department first"}
+            </option>
+            {sectionOptions.map((sec) => (
+              <option key={sec} value={sec}>
+                {sec}
+              </option>
+            ))}
+          </select>
+          {errors.section && (
+            <p className="text-red-600 text-sm mt-1">
+              {errors.section.message}
+            </p>
+          )}
+        </div>
 
-{/* School / Office */}
-<div className="md:col-span-2">
-  <label className="block font-medium text-gray-700 mb-1">
-    School / Office <span className="text-red-500">*</span>
-  </label>
-  <select
-    {...register("school", personalInfoValidation.school)}
-    className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500"
-    disabled={!selectedDept || !selectedSection}
-    defaultValue=""
-  >
-    <option value="">
-      {selectedDept && selectedSection
-        ? "Select School / Office"
-        : "Select Department and Section first"}
-    </option>
-    {schoolOptions.map((sch) => (
-      <option key={sch} value={sch}>
-        {sch}
-      </option>
-    ))}
-  </select>
-  {errors.school && (
-    <p className="text-red-600 text-sm mt-1">{errors.school.message}</p>
-  )}
-</div>
-
+        {/* School / Office */}
+        <div className="md:col-span-2">
+          <label className="block font-medium text-gray-700 mb-1">
+            School / Office <span className="text-red-500">*</span>
+          </label>
+          <select
+            {...register("school", personalInfoValidation.school)}
+            className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+            disabled={!selectedDept || !selectedSection}
+            defaultValue=""
+          >
+            <option value="">
+              {selectedDept && selectedSection
+                ? "Select School / Office"
+                : "Select Department and Section first"}
+            </option>
+            {schoolOptions.map((sch) => (
+              <option key={sch} value={sch}>
+                {sch}
+              </option>
+            ))}
+          </select>
+          {errors.school && (
+            <p className="text-red-600 text-sm mt-1">{errors.school.message}</p>
+          )}
+        </div>
 
         {/* Location */}
         <div>
-          <label className="block font-medium text-gray-700 mb-1">Location</label>
+          <label className="block font-medium text-gray-700 mb-1">
+            Location
+          </label>
           <input
             className="w-full border border-gray-300 rounded-lg p-3 bg-gray-50 focus:outline-none"
             readOnly
@@ -196,13 +213,17 @@ export default function PersonalInfoSection() {
             placeholder="Auto-filled"
           />
           {errors.location && (
-            <p className="text-red-600 text-sm mt-1">{errors.location.message}</p>
+            <p className="text-red-600 text-sm mt-1">
+              {errors.location.message}
+            </p>
           )}
         </div>
 
         {/* Country */}
         <div>
-          <label className="block font-medium text-gray-700 mb-1">Country</label>
+          <label className="block font-medium text-gray-700 mb-1">
+            Country
+          </label>
           <input
             className="w-full border border-gray-300 rounded-lg p-3 bg-gray-50 focus:outline-none"
             readOnly
@@ -211,7 +232,9 @@ export default function PersonalInfoSection() {
             placeholder="Auto-filled"
           />
           {errors.country && (
-            <p className="text-red-600 text-sm mt-1">{errors.country.message}</p>
+            <p className="text-red-600 text-sm mt-1">
+              {errors.country.message}
+            </p>
           )}
         </div>
       </div>
