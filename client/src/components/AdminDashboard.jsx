@@ -2,47 +2,63 @@ import { useEffect, useState } from "react";
 import ViewApplicantModal from "./ViewApplicantModal";
 import { Link } from "react-router-dom";
 import { Home } from "lucide-react";
-import Footer from "./Footer"
+import Footer from "./Footer";
 
 // Utility function to format date
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  
+
   // Handle invalid dates
   if (isNaN(date.getTime())) {
     return "Invalid Date";
   }
-  
+
   // Get day with suffix
   const day = date.getDate();
   const daySuffix = (day) => {
-    if (day > 3 && day < 21) return 'th';
+    if (day > 3 && day < 21) return "th";
     switch (day % 10) {
-      case 1: return 'st';
-      case 2: return 'nd';
-      case 3: return 'rd';
-      default: return 'th';
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
     }
   };
-  
+
   // Get month name
   const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
   const month = months[date.getMonth()];
-  
+
   // Get year
   const year = date.getFullYear();
-  
+
   // Get time in 12-hour format
   let hours = date.getHours();
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  const ampm = hours >= 12 ? 'pm' : 'am';
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const ampm = hours >= 12 ? "pm" : "am";
   hours = hours % 12;
   hours = hours ? hours : 12; // 0 should be 12
-  
-  return `${day}${daySuffix(day)} ${month}, ${year} ${hours}:${minutes}${ampm} EAT`;
+
+  return `${day}${daySuffix(
+    day
+  )} ${month}, ${year} ${hours}:${minutes}${ampm} EAT`;
 };
 
 const AdminDashboard = () => {
@@ -67,7 +83,9 @@ const AdminDashboard = () => {
     fetch(`${url}/get-data`)
       .then((res) => res.json())
       .then((data) => {
-        const sorted = data.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const sorted = data.data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
         setSubmissions(sorted);
         setFiltered(sorted);
         setLastUpdated(new Date());
@@ -104,34 +122,35 @@ const AdminDashboard = () => {
     setPage(1); // reset page when filters change
   }, [jobTypeFilter, eduFilter, submissions]);
 
-  const paginated = filtered.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const paginated = filtered.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
- 
-  <div className="mb-6">
-  {/* Row: Home left, Logo right */}
-  <div className="flex justify-between items-center">
-    <Link
-      to="/"
-      className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 transition border border-blue-200 rounded-full px-3 py-1 bg-blue-50"
-    >
-      <Home className="w-4 h-4" /> Home
-    </Link>
+      <div className="mb-6">
+        {/* Row: Home left, Logo right */}
+        <div className="flex justify-between items-center">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 transition border border-blue-200 rounded-full px-3 py-1 bg-blue-50"
+          >
+            <Home className="w-4 h-4" /> Home
+          </Link>
 
- <img
-  src="/images/verge-logo.png"
-  alt="Logo"
-  className="h-[40px] sm:h-15 w-auto object-contain"
-/>
+          <img
+            src="/images/verge-logo.png"
+            alt="Logo"
+            className="h-[40px] sm:h-15 w-auto object-contain"
+          />
+        </div>
 
-  </div>
-
-  {/* Title: centered below */}
-  <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800 mt-4 text-center">
-    Staff Data Submissions
-  </h2>
-</div>
+        {/* Title: centered below */}
+        <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800 mt-4 text-center">
+          Staff Data Submissions
+        </h2>
+      </div>
 
       {/* Auto Refresh Controls */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
@@ -160,9 +179,6 @@ const AdminDashboard = () => {
         )}
       </div>
 
-
-
-
       {/* Filters */}
       <div className="flex flex-wrap gap-4 mb-6">
         <select
@@ -181,7 +197,9 @@ const AdminDashboard = () => {
           <option value="">Filter by Education</option>
           <option value="High School Only">High School Only</option>
           <option value="Diploma/Professional Qualification">Diploma</option>
-          <option value="Master’s + Diploma/Professional Qualification">Master's + Diploma</option>
+          <option value="Master’s + Diploma/Professional Qualification">
+            Master's + Diploma
+          </option>
         </select>
       </div>
 
@@ -192,7 +210,9 @@ const AdminDashboard = () => {
           <span className="ml-3 text-blue-600">Loading submissions...</span>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="text-center text-gray-500 my-10">❗ No submissions found with the current filters.</div>
+        <div className="text-center text-gray-500 my-10">
+          ❗ No submissions found with the current filters.
+        </div>
       ) : (
         <>
           {/* Table */}
@@ -204,6 +224,7 @@ const AdminDashboard = () => {
                   <th className="p-3 border-b">Job Title</th>
                   <th className="p-3 border-b">Job Type</th>
                   <th className="p-3 border-b">Education</th>
+                  <th className="p-3 border-b">Experience</th>
                   <th className="p-3 border-b">Submitted</th>
                   <th className="p-3 border-b">CV</th>
                   <th className="p-3 border-b text-center">Actions</th>
@@ -211,14 +232,32 @@ const AdminDashboard = () => {
               </thead>
               <tbody className="text-gray-800">
                 {paginated.map((item, i) => (
-                  <tr key={item.id} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                  <tr
+                    key={item.id}
+                    className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                  >
                     <td className="p-3">{item.name}</td>
                     <td className="p-3">{item.jobTitle}</td>
                     <td className="p-3">{item.jobType}</td>
                     <td className="p-3">{item.educationLevel}</td>
                     <td className="p-3">
-                      {formatDate(item.createdAt)}
+                      {Array.isArray(item.experienceList) &&
+                      item.experienceList.length > 0 ? (
+                        <ul className="list-disc pl-4">
+                          {item.experienceList.map((exp, idx) => (
+                            <li key={idx}>
+                              <span className="font-medium text-gray-700">
+                                {exp.organization}
+                              </span>
+                              {exp.years ? ` (${exp.years})` : ""}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <span className="text-gray-400">No experience</span>
+                      )}
                     </td>
+                    <td className="p-3">{formatDate(item.createdAt)}</td>
                     <td className="p-3">
                       {item.cvFile ? (
                         <a
@@ -250,7 +289,8 @@ const AdminDashboard = () => {
           {/* Pagination */}
           <div className="flex justify-between items-center mt-6 text-sm">
             <div className="text-gray-600">
-              Showing page <strong>{page}</strong> of <strong>{totalPages}</strong>
+              Showing page <strong>{page}</strong> of{" "}
+              <strong>{totalPages}</strong>
             </div>
             <div className="space-x-2">
               <button
@@ -273,8 +313,11 @@ const AdminDashboard = () => {
       )}
 
       {/* Modal */}
-      <ViewApplicantModal applicant={selected} onClose={() => setSelected(null)} />
-        <Footer />
+      <ViewApplicantModal
+        applicant={selected}
+        onClose={() => setSelected(null)}
+      />
+      <Footer />
     </div>
   );
 };
