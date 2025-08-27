@@ -76,15 +76,15 @@ export default function FormWrapper() {
         console.error("❌ Server error:", json);
         if (json.errors) {
           const messages = Object.values(json.errors).join("\n");
-          alert("Submission failed:\n" + messages);
+          alert("Failed to save your data, try again:\n" + messages);
         } else {
-          alert("Submission failed: " + (json?.message || json?.error || "Unknown error"));
+          alert("Failed to save your data, try again: " + (json?.message || json?.error || "Unknown error"));
         }
         return;
       }
 
       console.log("✅ Success:", json);
-      alert("Form submitted successfully! Your application has been saved.");
+      alert("Form submitted successfully! Your data has been saved.");
       
       // Optionally reset the form or redirect
       // methods.reset();
