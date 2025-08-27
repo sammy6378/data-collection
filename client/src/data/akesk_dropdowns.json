@@ -1,0 +1,539 @@
+{
+  "departments": [
+    "Academic Management",
+    "CEO, Executive and Senior Management",
+    "Operations/Admin Staff",
+    "Support Staff",
+    "Teaching staff"
+  ],
+  "sectionsByDepartment": {
+    "Academic Management": [
+      "Head Teacher",
+      "Vice Principal",
+      "Coordinators",
+      "Counsellors"
+    ],
+    "CEO, Executive and Senior Management": [
+      "CEO",
+      "Head of Department",
+      "Regional Head of Department",
+      "Head of Academy",
+      "Head of Academics",
+      "Principal"
+    ],
+    "Operations/Admin Staff": [
+      "Admin",
+      "Admission",
+      "Auditing",
+      "Facilities",
+      "Finance",
+      "Health & Wellness Clinic",
+      "HR",
+      "IT",
+      "Logistics & Admin",
+      "Marketing & Communications",
+      "Network Shared Services",
+      "Procurement",
+      "Regional",
+      "Security"
+    ],
+    "Support Staff": [
+      "Cleaner",
+      "Driver",
+      "Gardener",
+      "Messenger",
+      "Laundry",
+      "Food services",
+      "Stores",
+      "School Transport"
+    ],
+    "Teaching staff": [
+      "Creative Arts & Sports",
+      "Data & Assessments",
+      "Design",
+      "English & Literature",
+      "Expressive Arts",
+      "Games & Sports",
+      "Head of Science",
+      "Humanities",
+      "Junior School",
+      "Languages",
+      "Mathematics",
+      "Operations Admin",
+      "Physical & Health Education",
+      "Professional Development Centre",
+      "Religion",
+      "Sciences",
+      "Senior School",
+      "Social & Pre-tech Studies",
+      "Technical Subjects"
+    ]
+  },
+  "schoolsByDeptSection": {
+    "Academic Management": {
+      "Head Teacher": ["Support Office"],
+      "Vice Principal": ["Aga Khan Academy, Mombasa"],
+      "Coordinators": ["Aga Khan Academy, Mombasa"],
+      "Counsellors": ["Aga Khan Academy, Mombasa"]
+    },
+    "CEO, Executive and Senior Management": {
+      "CEO": ["Support Office"],
+      "Head of Department": ["Support Office", "Aga Khan Academy, Mombasa"],
+      "Regional Head of Department": ["Support Office"],
+      "Head of Academy": ["Aga Khan Academy, Mombasa"],
+      "Head of Academics": ["Support Office"],
+      "Principal": ["Aga Khan Academy, Mombasa"]
+    },
+    "Operations/Admin Staff": {
+      "Admin": ["Support Office"],
+      "Admission": ["Aga Khan Academy, Mombasa"],
+      "Auditing": [],
+      "Facilities": [],
+      "Finance": [],
+      "Health & Wellness Clinic": [],
+      "HR": [],
+      "IT": [],
+      "Logistics & Admin": [],
+      "Marketing & Communications": [],
+      "Network Shared Services": [],
+      "Procurement": [],
+      "Regional": [],
+      "Security": []
+    },
+    "Support Staff": {
+      "Cleaner": ["Aga Khan Academy, Mombasa"],
+      "Driver": ["Aga Khan High School, Mombasa"],
+      "Gardener": ["Aga Khan Primary School, Mombasa"],
+      "Messenger": ["Aga Khan Nursery School, Mombasa"],
+      "Laundry": ["Aga Khan Senior School, Nairobi"],
+      "Food services": ["Aga Khan Junior School, Nairobi"],
+      "Stores": ["Aga Khan Nursery School, Nairobi"],
+      "School Transport": [
+        "Aga Khan High School, Nairobi",
+        "Aga Khan Nursery School, Kisumu",
+        "Aga Khan Primary School, Kisumu",
+        "Aga Khan Nursery School, Eldoret",
+        "Support Office"
+      ]
+    },
+    "Teaching staff": {
+      "Creative Arts & Sports": ["Aga Khan Academy, Mombasa"],
+      "Data & Assessments": ["Aga Khan High School, Mombasa"],
+      "Design": ["Aga Khan Primary School, Mombasa"],
+      "English & Literature": ["Aga Khan Nursery School, Mombasa"],
+      "Expressive Arts": ["Aga Khan Senior School, Nairobi"],
+      "Games & Sports": ["Aga Khan Junior School, Nairobi"],
+      "Head of Science": ["Aga Khan Nursery School, Nairobi"],
+      "Humanities": ["Aga Khan High School, Nairobi"],
+      "Junior School": ["Aga Khan Nursery School, Kisumu"],
+      "Languages": ["Aga Khan Primary School, Kisumu"],
+      "Mathematics": ["Aga Khan Nursery School, Eldoret"],
+      "Operations Admin": ["Aga Khan Nursery School, Eldoret"],
+      "Physical & Health Education": [] ,
+      "Professional Development Centre": [],
+      "Religion": [],
+      "Sciences": [],
+      "Senior School": [],
+      "Social & Pre-tech Studies": [],
+      "Technical Subjects": []
+    }
+  },
+  "nested": {
+    "CEO, Executive and Senior Management": {
+      "CEO": [
+        {
+          "schoolOffice": "Support Office",
+          "location": "Nairobi",
+          "country": "Kenya"
+        }
+      ]
+    },
+    "": {
+      "Head of Department": [
+        {
+          "schoolOffice": "Support Office",
+          "location": "Nairobi",
+          "country": "Kenya"
+        },
+        {
+          "schoolOffice": "Aga Khan Academy, Mombasa",
+          "location": "Mombasa",
+          "country": "Kenya"
+        }
+      ],
+      "Regional Head of Department": [
+        {
+          "schoolOffice": "Support Office",
+          "location": "Nairobi",
+          "country": "Kenya"
+        }
+      ],
+      "Head of Academy": [
+        {
+          "schoolOffice": "Aga Khan Academy, Mombasa",
+          "location": "Mombasa",
+          "country": "Kenya"
+        }
+      ],
+      "Head of Academics": [
+        {
+          "schoolOffice": "Support Office",
+          "location": "Nairobi",
+          "country": "Kenya"
+        }
+      ],
+      "Principal": [
+        {
+          "schoolOffice": "Aga Khan Academy, Mombasa",
+          "location": "Mombasa",
+          "country": "Kenya"
+        }
+      ],
+      "Vice Principal": [
+        {
+          "schoolOffice": "Aga Khan Academy, Mombasa",
+          "location": "Mombasa",
+          "country": "Kenya"
+        }
+      ],
+      "Coordinators": [
+        {
+          "schoolOffice": "Aga Khan Academy, Mombasa",
+          "location": "Mombasa",
+          "country": "Kenya"
+        }
+      ],
+      "Counsellors": [
+        {
+          "schoolOffice": "Aga Khan Academy, Mombasa",
+          "location": "Mombasa",
+          "country": "Kenya"
+        }
+      ],
+      "Data & Assessments": [
+        {
+          "schoolOffice": "Aga Khan High School, Mombasa",
+          "location": "Mombasa",
+          "country": "Kenya"
+        }
+      ],
+      "Design": [
+        {
+          "schoolOffice": "Aga Khan Primary School, Mombasa",
+          "location": "Kisumu",
+          "country": "Kenya"
+        }
+      ],
+      "English & Literature": [
+        {
+          "schoolOffice": "Aga Khan Nursery School, Mombasa",
+          "location": "Eldoret",
+          "country": "Kenya"
+        }
+      ],
+      "Expressive Arts": [
+        {
+          "schoolOffice": "Aga Khan Senior School, Nairobi",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Games & Sports": [
+        {
+          "schoolOffice": "Aga Khan Junior School, Nairobi",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Head of Science": [
+        {
+          "schoolOffice": "Aga Khan Nursery School, Nairobi",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Humanities": [
+        {
+          "schoolOffice": "Aga Khan High School, Nairobi",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Junior School": [
+        {
+          "schoolOffice": "Aga Khan Nursery School, Kisumu",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Languages": [
+        {
+          "schoolOffice": "Aga Khan Primary School, Kisumu",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Mathematics": [
+        {
+          "schoolOffice": "Aga Khan Nursery School, Eldoret",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Operations Admin": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Physical & Health Education": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Professional Development Centre": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Religion": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Sciences": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Senior School": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Social & Pre-tech Studies": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Technical Subjects": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Admission": [
+        {
+          "schoolOffice": "Aga Khan Academy, Mombasa",
+          "location": "Mombasa",
+          "country": "Kenya"
+        }
+      ],
+      "Auditing": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Facilities": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Finance": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Health & Wellness Clinic": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "HR": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "IT": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Logistics & Admin": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Marketing & Communications": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Network Shared Services": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Procurement": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Regional": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Security": [
+        {
+          "schoolOffice": "",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Driver": [
+        {
+          "schoolOffice": "Aga Khan High School, Mombasa",
+          "location": "Mombasa",
+          "country": "Kenya"
+        }
+      ],
+      "Gardener": [
+        {
+          "schoolOffice": "Aga Khan Primary School, Mombasa",
+          "location": "Kisumu",
+          "country": "Kenya"
+        }
+      ],
+      "Messenger": [
+        {
+          "schoolOffice": "Aga Khan Nursery School, Mombasa",
+          "location": "Eldoret",
+          "country": "Kenya"
+        }
+      ],
+      "Laundry": [
+        {
+          "schoolOffice": "Aga Khan Senior School, Nairobi",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Food services": [
+        {
+          "schoolOffice": "Aga Khan Junior School, Nairobi",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "Stores": [
+        {
+          "schoolOffice": "Aga Khan Nursery School, Nairobi",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "School Transport": [
+        {
+          "schoolOffice": "Aga Khan High School, Nairobi",
+          "location": "",
+          "country": ""
+        }
+      ],
+      "(No Section)": [
+        {
+          "schoolOffice": "Aga Khan Nursery School, Kisumu",
+          "location": "",
+          "country": ""
+        },
+        {
+          "schoolOffice": "Aga Khan Primary School, Kisumu",
+          "location": "",
+          "country": ""
+        },
+        {
+          "schoolOffice": "Aga Khan Nursery School, Eldoret",
+          "location": "",
+          "country": ""
+        },
+        {
+          "schoolOffice": "Support Office",
+          "location": "",
+          "country": ""
+        }
+      ]
+    },
+    "Academic Management": {
+      "Head Teacher": [
+        {
+          "schoolOffice": "Support Office",
+          "location": "Nairobi",
+          "country": "Kenya"
+        }
+      ]
+    },
+    "Teaching staff": {
+      "Creative Arts & Sports": [
+        {
+          "schoolOffice": "Aga Khan Academy, Mombasa",
+          "location": "Nairobi",
+          "country": "Kenya"
+        }
+      ]
+    },
+    "Operations/Admin Staff": {
+      "Admin": [
+        {
+          "schoolOffice": "Support Office",
+          "location": "Nairobi",
+          "country": "Kenya"
+        }
+      ]
+    },
+    "Support Staff": {
+      "Cleaner": [
+        {
+          "schoolOffice": "Aga Khan Academy, Mombasa",
+          "location": "Nairobi",
+          "country": "Kenya"
+        }
+      ]
+    }
+  }
+}

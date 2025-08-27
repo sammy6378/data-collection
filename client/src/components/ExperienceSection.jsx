@@ -86,7 +86,7 @@ export default function ExperienceSection() {
           onClick={() => append({ organization: "", years: "" })}
           className="text-sm font-semibold text-teal-700 hover:underline"
         >
-          + Add Another Organization
+          + Click to Add Organization
         </button>
       </div>
 
