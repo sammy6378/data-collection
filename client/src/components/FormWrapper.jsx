@@ -1,5 +1,6 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PersonalInfoSection from "./PersonalInfoSection";
 import EducationSection from "./EducationSection";
 import ExperienceSection from "./ExperienceSection";
@@ -9,6 +10,7 @@ import StepNavigation from "./StepNavigation";
 const steps = ["Personal", "Education", "Experience", "Upload CV"];
 
 export default function FormWrapper() {
+  const navigate = useNavigate();
   const methods = useForm();
   const { handleSubmit, watch, setValue, trigger } = methods;
 
@@ -44,7 +46,13 @@ export default function FormWrapper() {
   const showModal = (title, message, type = "info") => {
     setModal({ open: true, title, message, type });
   };
-  const closeModal = () => setModal({ ...modal, open: false });
+  const closeModal = () => {
+    setModal({ ...modal, open: false });
+    if (modal.type === "success") {
+      methods.reset();
+      navigate("/");
+    }
+  };
 
   const onSubmit = async (data) => {
     console.log("Form data before submission:", data);
@@ -108,7 +116,7 @@ export default function FormWrapper() {
       console.log("✅ Success:", json);
       showModal(
         "Success",
-        "Form submitted successfully! Your data has been saved.",
+        "Your data has been saved successfully. Thank You!",
         "success"
       );
       // Optionally reset the form or redirect
