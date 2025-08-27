@@ -22,10 +22,30 @@
       "Principal"
     ],
     "Operations/Admin Staff": [
-      "Admin"
+      "Admin",
+      "Admission",
+      "Auditing",
+      "Facilities",
+      "Finance",
+      "Health & Wellness Clinic",
+      "HR",
+      "IT",
+      "Logistics & Admin",
+      "Marketing & Communications",
+      "Network Shared Services",
+      "Procurement",
+      "Regional",
+      "Security"
     ],
     "Support Staff": [
-      "Cleaner"
+      "Cleaner",
+      "Driver",
+      "Gardener",
+      "Messenger",
+      "Laundry",
+      "Food services",
+      "Stores",
+      "School Transport"
     ],
     "Teaching staff": [
       "Creative Arts & Sports",
@@ -65,10 +85,36 @@
       "Principal": ["Aga Khan Academy, Mombasa"]
     },
     "Operations/Admin Staff": {
-      "Admin": ["Support Office"]
+      "Admin": ["Support Office"],
+      "Admission": ["Aga Khan Academy, Mombasa"],
+      "Auditing": [],
+      "Facilities": [],
+      "Finance": [],
+      "Health & Wellness Clinic": [],
+      "HR": [],
+      "IT": [],
+      "Logistics & Admin": [],
+      "Marketing & Communications": [],
+      "Network Shared Services": [],
+      "Procurement": [],
+      "Regional": [],
+      "Security": []
     },
     "Support Staff": {
-      "Cleaner": ["Aga Khan Academy, Mombasa"]
+      "Cleaner": ["Aga Khan Academy, Mombasa"],
+      "Driver": ["Aga Khan High School, Mombasa"],
+      "Gardener": ["Aga Khan Primary School, Mombasa"],
+      "Messenger": ["Aga Khan Nursery School, Mombasa"],
+      "Laundry": ["Aga Khan Senior School, Nairobi"],
+      "Food services": ["Aga Khan Junior School, Nairobi"],
+      "Stores": ["Aga Khan Nursery School, Nairobi"],
+      "School Transport": [
+        "Aga Khan High School, Nairobi",
+        "Aga Khan Nursery School, Kisumu",
+        "Aga Khan Primary School, Kisumu",
+        "Aga Khan Nursery School, Eldoret",
+        "Support Office"
+      ]
     },
     "Teaching staff": {
       "Creative Arts & Sports": ["Aga Khan Academy, Mombasa"],
