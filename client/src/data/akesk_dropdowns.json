@@ -28,7 +28,25 @@
       "Cleaner"
     ],
     "Teaching staff": [
-      "Creative Arts & Sports"
+      "Creative Arts & Sports",
+      "Data & Assessments",
+      "Design",
+      "English & Literature",
+      "Expressive Arts",
+      "Games & Sports",
+      "Head of Science",
+      "Humanities",
+      "Junior School",
+      "Languages",
+      "Mathematics",
+      "Operations Admin",
+      "Physical & Health Education",
+      "Professional Development Centre",
+      "Religion",
+      "Sciences",
+      "Senior School",
+      "Social & Pre-tech Studies",
+      "Technical Subjects"
     ]
   },
   "schoolsByDeptSection": {
@@ -53,7 +71,25 @@
       "Cleaner": ["Aga Khan Academy, Mombasa"]
     },
     "Teaching staff": {
-      "Creative Arts & Sports": ["Aga Khan Academy, Mombasa"]
+      "Creative Arts & Sports": ["Aga Khan Academy, Mombasa"],
+      "Data & Assessments": ["Aga Khan High School, Mombasa"],
+      "Design": ["Aga Khan Primary School, Mombasa"],
+      "English & Literature": ["Aga Khan Nursery School, Mombasa"],
+      "Expressive Arts": ["Aga Khan Senior School, Nairobi"],
+      "Games & Sports": ["Aga Khan Junior School, Nairobi"],
+      "Head of Science": ["Aga Khan Nursery School, Nairobi"],
+      "Humanities": ["Aga Khan High School, Nairobi"],
+      "Junior School": ["Aga Khan Nursery School, Kisumu"],
+      "Languages": ["Aga Khan Primary School, Kisumu"],
+      "Mathematics": ["Aga Khan Nursery School, Eldoret"],
+      "Operations Admin": ["Aga Khan Nursery School, Eldoret"],
+      "Physical & Health Education": [] ,
+      "Professional Development Centre": [],
+      "Religion": [],
+      "Sciences": [],
+      "Senior School": [],
+      "Social & Pre-tech Studies": [],
+      "Technical Subjects": []
     }
   },
   "nested": {
