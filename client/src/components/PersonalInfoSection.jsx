@@ -176,7 +176,7 @@ export default function PersonalInfoSection() {
         {/* School / Office */}
         <div className="md:col-span-2">
           <label className="block font-medium text-gray-700 mb-1">
-            School / Office <span className="text-red-500">*</span>
+            School / Office 
           </label>
           <select
             {...register("school", personalInfoValidation.school)}
@@ -239,5 +239,6 @@ export default function PersonalInfoSection() {
         </div>
       </div>
     </div>
+    
   );
 }

@@ -52,9 +52,9 @@ export const personalInfoValidation = {
   supervisor: textRequired("Supervisor"),
   department: textRequired("Department"),
   section: textRequired("Section"),
-  school: textRequired("School"),
-  location: textRequired("Location"),
-  country: textRequired("Country"),
+  school: {},
+  location: {},
+  country: {},
 };
 
 

@@ -4,8 +4,8 @@ import { Data, DataModel } from "../model/data";
 // craete form data
 export const createData = async (req: Request, res: Response) => {
   try {
-    console.log("Request body:", req.body);
-    console.log("Request headers:", req.headers);
+    // console.log("Request body:", req.body);
+    // console.log("Request headers:", req.headers);
 
     if (!req.body) {
       return res
@@ -40,9 +40,9 @@ export const createData = async (req: Request, res: Response) => {
       !supervisor ||
       !department ||
       !section ||
-      !location ||
-      !country ||
-      !school ||
+      // !location ||
+      // !country ||
+      // !school ||
       !educationLevel ||
       !experienceSummary ||
       !experienceList ||

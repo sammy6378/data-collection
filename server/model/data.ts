@@ -35,9 +35,9 @@ export interface Data {
   supervisor: string;
   department: string;
   section: string;
-  location: string;
-  country: string;
-  school: string;
+  location?: string;
+  country?: string;
+  school?: string;
   educationLevel: Level;
   experienceList: {
     organization: string;
@@ -58,9 +58,9 @@ const dataSchema = new mongoose.Schema<Data>({
     supervisor: { type: String, required: true },
     department: { type: String, required: true },
     section: { type: String, required: true },
-    location: { type: String, required: true },
-    country: { type: String, required: true },
-    school: { type: String, required: true },
+    location: { type: String, required: false },
+    country: { type: String, required: false },
+    school: { type: String, required: false },
     
     // section 2
     educationLevel: { type: String, enum: Object.values(Level), required: true },

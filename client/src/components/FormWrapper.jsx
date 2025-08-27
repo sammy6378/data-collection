@@ -1,34 +1,61 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PersonalInfoSection from "./PersonalInfoSection";
 import EducationSection from "./EducationSection";
 import ExperienceSection from "./ExperienceSection";
 import FileUploadSection from "./FileUploadSection";
 import StepNavigation from "./StepNavigation";
 
-
 const steps = ["Personal", "Education", "Experience", "Upload CV"];
 
 export default function FormWrapper() {
+  const navigate = useNavigate();
   const methods = useForm();
   const { handleSubmit, watch, setValue, trigger } = methods;
 
   const stepFields = [
-    ["name", "jobTitle", "jobType", "supervisor", "department", "section", "school", "location", "country"],
+    [
+      "name",
+      "jobTitle",
+      "jobType",
+      "supervisor",
+      "department",
+      "section",
+      // "school",
+      // "location",
+      // "country",
+    ],
     ["educationLevel"],
     ["experienceList", "experienceSummary"],
     ["cv"],
   ];
 
   const [currentStep, setCurrentStep] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false); // ✅ NEW state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [modal, setModal] = useState({
+    open: false,
+    title: "",
+    message: "",
+    type: "info",
+  });
   const isLastStep = currentStep === steps.length - 1;
   const url = import.meta.env.VITE_API_URL;
-  console.log("API URL:", url);
+  // console.log("API URL:", url);
+
+  const showModal = (title, message, type = "info") => {
+    setModal({ open: true, title, message, type });
+  };
+  const closeModal = () => {
+    setModal({ ...modal, open: false });
+    if (modal.type === "success") {
+      methods.reset();
+      navigate("/");
+    }
+  };
+
   const onSubmit = async (data) => {
-    console.log("Form data before submission:", data);
-    
-    // Prepare JSON data for submission
+    // console.log("Form data before submission:", data);
     const jsonData = {
       name: data.name,
       jobTitle: data.jobTitle,
@@ -45,13 +72,10 @@ export default function FormWrapper() {
       otherSkills: data.otherSkills,
       experienceList: data.experienceList,
       experienceSummary: data.experienceSummary,
-      cvFile: data.cvFile || "", // This will be the Cloudinary URL
+      cvFile: data.cvFile || "",
     };
-
-    console.log("JSON data to submit:", jsonData);
-
-    setIsSubmitting(true); // ✅ Start spinner
-
+    // console.log("JSON data to submit:", jsonData);
+    setIsSubmitting(true);
     try {
       const res = await fetch(`${url}/create`, {
         method: "POST",
@@ -60,52 +84,62 @@ export default function FormWrapper() {
         },
         body: JSON.stringify(jsonData),
       });
-
       const text = await res.text();
       let json;
-
       try {
         json = JSON.parse(text);
       } catch {
         console.error("❌ Response is not valid JSON:", text);
-        alert("Server returned invalid response");
+        showModal("Server Error", "Server returned invalid response", "error");
         return;
       }
-
       if (!res.ok) {
         console.error("❌ Server error:", json);
         if (json.errors) {
-          const messages = Object.values(json.errors).join("\n");
-          alert("Failed to save your data, try again:\n" + messages);
+          const messages = Object.values(json.errors).join("<br/>");
+          showModal(
+            "Submission Failed",
+            `Failed to save your data, try again:<br/>${messages}`,
+            "error"
+          );
         } else {
-          alert("Failed to save your data, try again: " + (json?.message || json?.error || "Unknown error"));
+          showModal(
+            "Submission Failed",
+            `Failed to save your data, try again: ${
+              json?.message || json?.error || "Unknown error"
+            }`,
+            "error"
+          );
         }
         return;
       }
-
-      console.log("✅ Success:", json);
-      alert("Form submitted successfully! Your data has been saved.");
-      
+      // console.log("✅ Success:", json);
+      showModal(
+        "Success",
+        "Your data has been saved successfully. Thank You!",
+        "success"
+      );
       // Optionally reset the form or redirect
       // methods.reset();
-      
     } catch (err) {
       console.error("❌ Network error:", err);
-      alert("Network error occurred. Please check your connection and try again.");
+      showModal(
+        "Network Error",
+        "Network error occurred. Please check your connection and try again.",
+        "error"
+      );
     } finally {
-      setIsSubmitting(false); // ✅ Stop spinner
+      setIsSubmitting(false);
     }
   };
 
   const nextStep = async () => {
     const fieldsToValidate = stepFields[currentStep];
     const isValid = await trigger(fieldsToValidate);
-
     if (isValid) {
       setCurrentStep((s) => Math.min(s + 1, steps.length - 1));
     }
   };
-
   const prevStep = () => setCurrentStep((s) => Math.max(s - 1, 0));
 
   return (
@@ -117,14 +151,18 @@ export default function FormWrapper() {
             <div key={index} className="flex-1 text-center">
               <div
                 className={`w-8 h-8 mx-auto rounded-full flex items-center justify-center font-bold text-sm ${
-                  currentStep === index ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-600"
+                  currentStep === index
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 text-gray-600"
                 }`}
               >
                 {index + 1}
               </div>
               <p
                 className={`mt-2 text-sm ${
-                  currentStep === index ? "text-blue-600 font-semibold" : "text-gray-500"
+                  currentStep === index
+                    ? "text-blue-600 font-semibold"
+                    : "text-gray-500"
                 }`}
               >
                 {label}
@@ -138,10 +176,7 @@ export default function FormWrapper() {
         {currentStep === 1 && <EducationSection />}
         {currentStep === 2 && <ExperienceSection />}
         {currentStep === 3 && (
-          <FileUploadSection
-            watch={watch}
-            setValue={setValue}
-          />
+          <FileUploadSection watch={watch} setValue={setValue} />
         )}
 
         {/* Navigation */}
@@ -152,9 +187,37 @@ export default function FormWrapper() {
           isLastStep={isLastStep}
           onPrev={prevStep}
           onNext={nextStep}
-          isSubmitting={isSubmitting} // ✅ pass this to show spinner
+          isSubmitting={isSubmitting}
         />
       </form>
+      {/* Modal */}
+      {modal.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-900/70 via-teal-900/60 to-indigo-900/70 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full text-center">
+            <h3
+              className={`text-xl font-bold mb-2 ${
+                modal.type === "success"
+                  ? "text-green-600"
+                  : modal.type === "error"
+                  ? "text-red-600"
+                  : "text-blue-600"
+              }`}
+            >
+              {modal.title}
+            </h3>
+            <div
+              className="mb-4 text-gray-700"
+              dangerouslySetInnerHTML={{ __html: modal.message }}
+            />
+            <button
+              onClick={closeModal}
+              className="mt-2 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition font-semibold"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </FormProvider>
   );
 }
