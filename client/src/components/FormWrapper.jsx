@@ -41,7 +41,7 @@ export default function FormWrapper() {
   });
   const isLastStep = currentStep === steps.length - 1;
   const url = import.meta.env.VITE_API_URL;
-  console.log("API URL:", url);
+  // console.log("API URL:", url);
 
   const showModal = (title, message, type = "info") => {
     setModal({ open: true, title, message, type });
@@ -55,7 +55,7 @@ export default function FormWrapper() {
   };
 
   const onSubmit = async (data) => {
-    console.log("Form data before submission:", data);
+    // console.log("Form data before submission:", data);
     const jsonData = {
       name: data.name,
       jobTitle: data.jobTitle,
@@ -74,7 +74,7 @@ export default function FormWrapper() {
       experienceSummary: data.experienceSummary,
       cvFile: data.cvFile || "",
     };
-    console.log("JSON data to submit:", jsonData);
+    // console.log("JSON data to submit:", jsonData);
     setIsSubmitting(true);
     try {
       const res = await fetch(`${url}/create`, {
@@ -113,7 +113,7 @@ export default function FormWrapper() {
         }
         return;
       }
-      console.log("✅ Success:", json);
+      // console.log("✅ Success:", json);
       showModal(
         "Success",
         "Your data has been saved successfully. Thank You!",
