@@ -50,7 +50,7 @@ export default function EducationSection() {
       </div>
 
       {/* Professional Qualifications */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <label className="block font-medium text-gray-700 mb-2">
           Diploma/Professional qualifications you possess
         </label>
@@ -65,7 +65,7 @@ export default function EducationSection() {
             {errors.qualifications.message}
           </p>
         )}
-      </div>
+      </div> */}
 
       {/* Other Education */}
       <div className="mb-6">
@@ -75,7 +75,7 @@ export default function EducationSection() {
         <textarea
           {...register("otherEducation", educationValidation.otherEducation)}
           rows={3}
-          placeholder="E.g. Short courses, workshops, certifications"
+          placeholder="E.g. Short courses, workshops, certifications, Diploma/Professional qualifications you possess"
           className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
         />
         {errors.otherEducation && (
