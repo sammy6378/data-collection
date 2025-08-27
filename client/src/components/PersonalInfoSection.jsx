@@ -237,7 +237,9 @@ export default function PersonalInfoSection() {
             </p>
           )}
         </div>
+        console.log('Cloudinary env:', import.meta.env);
       </div>
     </div>
+    
   );
 }
