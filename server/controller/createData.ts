@@ -40,9 +40,9 @@ export const createData = async (req: Request, res: Response) => {
       !supervisor ||
       !department ||
       !section ||
-      !location ||
-      !country ||
-      !school ||
+      // !location ||
+      // !country ||
+      // !school ||
       !educationLevel ||
       !experienceSummary ||
       !experienceList ||
