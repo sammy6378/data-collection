@@ -184,7 +184,7 @@ export default function FormWrapper() {
       </form>
       {/* Modal */}
       {modal.open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-900/70 via-teal-900/60 to-indigo-900/70 backdrop-blur-sm">
           <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full text-center">
             <h3
               className={`text-xl font-bold mb-2 ${
