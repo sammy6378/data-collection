@@ -21,6 +21,31 @@ export default function PersonalInfoSection() {
   const location = watch("location");
   const country = watch("country");
 
+  // Gather all unique locations from nested data
+  const allLocations = Array.from(
+    new Set(
+      Object.values(data.nested).flatMap((sectionObj) =>
+        Object.values(sectionObj).flatMap((entries) =>
+          entries
+            .map((e) => e.location)
+            .filter((loc) => loc && loc.trim() !== "")
+        )
+      )
+    )
+  );
+
+  // Map location to country for auto-fill
+  const locationToCountry = {};
+  Object.values(data.nested).forEach((sectionObj) => {
+    Object.values(sectionObj).forEach((entries) => {
+      entries.forEach((e) => {
+        if (e.location && e.location.trim() !== "") {
+          locationToCountry[e.location] = e.country;
+        }
+      });
+    });
+  });
+
   // Compute options
   const departmentOptions = data.departments || [];
   const sectionOptions = selectedDept
@@ -53,34 +78,14 @@ export default function PersonalInfoSection() {
   }, [selectedSection, setValue]);
 
   // Auto-fill location & country
+  // When location changes, set country automatically
   useEffect(() => {
-    if (selectedSchool) {
-      // Search all nested entries for a matching schoolOffice
-      let found = null;
-      for (const deptKey of Object.keys(data.nested)) {
-        const sectionObj = data.nested[deptKey];
-        for (const secKey of Object.keys(sectionObj)) {
-          const entries = sectionObj[secKey];
-          const match = entries.find((e) => e.schoolOffice === selectedSchool);
-          if (match) {
-            found = match;
-            break;
-          }
-        }
-        if (found) break;
-      }
-      if (found) {
-        setValue("location", found.location || "");
-        setValue("country", found.country || "");
-      } else {
-        setValue("location", "");
-        setValue("country", "");
-      }
+    if (location && locationToCountry[location]) {
+      setValue("country", locationToCountry[location] || "");
     } else {
-      setValue("location", "");
       setValue("country", "");
     }
-  }, [selectedSchool, setValue]);
+  }, [location, setValue]);
 
   return (
     <div>
@@ -207,18 +212,23 @@ export default function PersonalInfoSection() {
           )}
         </div>
 
-        {/* Location */}
+        {/* Location (Dropdown) */}
         <div>
           <label className="block font-medium text-gray-700 mb-1">
             Location
           </label>
-          <input
-            className="w-full border border-gray-300 rounded-lg p-3 bg-gray-50 focus:outline-none"
-            readOnly
+          <select
             {...register("location", personalInfoValidation.location)}
-            value={location || ""}
-            placeholder="Auto-filled"
-          />
+            className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500"
+            defaultValue=""
+          >
+            <option value="">Select Location</option>
+            {allLocations.map((loc) => (
+              <option key={loc} value={loc}>
+                {loc}
+              </option>
+            ))}
+          </select>
           {errors.location && (
             <p className="text-red-600 text-sm mt-1">
               {errors.location.message}
