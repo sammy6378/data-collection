@@ -32,12 +32,11 @@ export default function PersonalInfoSection() {
   const normalizedSection = (val) =>
     !val || val === "—" ? "(No Section)" : val;
 
-  const schoolOptions =
-    selectedDept && selectedSection
-      ? data.schoolsByDeptSection[selectedDept]?.[
-          normalizedSection(selectedSection)
-        ] || []
-      : [];
+  // School/Office: list all unique options from all departments/sections
+  const allSchoolOptions = Object.values(data.schoolsByDeptSection)
+    .flatMap((sectionObj) => Object.values(sectionObj))
+    .flat();
+  const schoolOptions = Array.from(new Set(allSchoolOptions));
 
   // Reset downstream fields when upstream changes
   useEffect(() => {
@@ -55,17 +54,24 @@ export default function PersonalInfoSection() {
 
   // Auto-fill location & country
   useEffect(() => {
-    if (selectedDept && selectedSection && selectedSchool) {
-      const secKey = normalizedSection(selectedSection);
-      // Try department-specific first, then fallback to "" key
-      let entries = data.nested[selectedDept]?.[secKey];
-      if (!entries) {
-        entries = data.nested[""]?.[secKey] || [];
+    if (selectedSchool) {
+      // Search all nested entries for a matching schoolOffice
+      let found = null;
+      for (const deptKey of Object.keys(data.nested)) {
+        const sectionObj = data.nested[deptKey];
+        for (const secKey of Object.keys(sectionObj)) {
+          const entries = sectionObj[secKey];
+          const match = entries.find((e) => e.schoolOffice === selectedSchool);
+          if (match) {
+            found = match;
+            break;
+          }
+        }
+        if (found) break;
       }
-      const match = entries.find((e) => e.schoolOffice === selectedSchool);
-      if (match) {
-        setValue("location", match.location || "");
-        setValue("country", match.country || "");
+      if (found) {
+        setValue("location", found.location || "");
+        setValue("country", found.country || "");
       } else {
         setValue("location", "");
         setValue("country", "");
@@ -74,7 +80,7 @@ export default function PersonalInfoSection() {
       setValue("location", "");
       setValue("country", "");
     }
-  }, [selectedDept, selectedSection, selectedSchool, setValue]);
+  }, [selectedSchool, setValue]);
 
   return (
     <div>
@@ -116,11 +122,17 @@ export default function PersonalInfoSection() {
           )}
         </div>
 
-        <FormInput
-          label="Reports to / Supervisor"
-          name="supervisor"
-          rules={personalInfoValidation.supervisor}
-        />
+        <div>
+          <FormInput
+            label="Reports to / Supervisor"
+            name="supervisor"
+            rules={personalInfoValidation.supervisor}
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            * Enter supervisor's title, not name (e.g., Principal, Head of
+            Department)
+          </p>
+        </div>
 
         {/* Department */}
         <div>
@@ -176,19 +188,14 @@ export default function PersonalInfoSection() {
         {/* School / Office */}
         <div className="md:col-span-2">
           <label className="block font-medium text-gray-700 mb-1">
-            School / Office 
+            School / Office
           </label>
           <select
             {...register("school", personalInfoValidation.school)}
             className="w-full border border-gray-300 rounded-lg p-3 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500"
-            disabled={!selectedDept || !selectedSection}
             defaultValue=""
           >
-            <option value="">
-              {selectedDept && selectedSection
-                ? "Select School / Office"
-                : "Select Department and Section first"}
-            </option>
+            <option value="">Select School / Office</option>
             {schoolOptions.map((sch) => (
               <option key={sch} value={sch}>
                 {sch}
@@ -239,6 +246,5 @@ export default function PersonalInfoSection() {
         </div>
       </div>
     </div>
-    
   );
 }

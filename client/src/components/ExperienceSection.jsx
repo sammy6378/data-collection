@@ -38,31 +38,37 @@ export default function ExperienceSection() {
               Name of Organization *
             </label>
             <input
-              {...register(`experienceList.${index}.organization`, experienceValidation.organization)}
+              {...register(
+                `experienceList.${index}.organization`,
+                experienceValidation.organization
+              )}
               className="w-full border border-gray-300 rounded-lg p-2"
               placeholder="E.g. AKESK, XYZ School"
             />
             {errors.experienceList?.[index]?.organization && (
-              <p className="text-red-600 text-sm mt-1">Organization name is required.</p>
+              <p className="text-red-600 text-sm mt-1">
+                Organization name is required.
+              </p>
             )}
           </div>
 
           {/* Years */}
           <div>
             <label className="block font-medium text-gray-700 mb-1">
-              Years of Experience *
+              Duration Taken (e.g. 2020-2024) *
             </label>
-            <select
-              {...register(`experienceList.${index}.years`, experienceValidation.years)}
+            <input
+              {...register(
+                `experienceList.${index}.years`,
+                experienceValidation.years
+              )}
               className="w-full border border-gray-300 rounded-lg p-2"
-            >
-              <option value="">Select experience duration</option>
-              {experienceRanges.map((range, idx) => (
-                <option key={idx} value={range}>{range}</option>
-              ))}
-            </select>
+              placeholder="E.g. 2020-2024"
+            />
             {errors.experienceList?.[index]?.years && (
-              <p className="text-red-600 text-sm mt-1">Please select experience duration.</p>
+              <p className="text-red-600 text-sm mt-1">
+                Please enter duration taken.
+              </p>
             )}
           </div>
 
@@ -96,15 +102,16 @@ export default function ExperienceSection() {
           Summary of your professional experience (Chronologically) *
         </label>
         <textarea
-          {...register("experienceSummary", experienceValidation.experienceSummary)}
+          {...register(
+            "experienceSummary",
+            experienceValidation.experienceSummary
+          )}
           rows={6}
           placeholder="E.g. 2012–2015: Teacher, St. Mary's School; 2016–2021: Deputy Principal, ABC School"
           className="w-full border border-gray-300 rounded-lg p-3"
         />
         {errors.experienceSummary && (
-          <p className="text-red-600 text-sm mt-1">
-            This summary is required.
-          </p>
+          <p className="text-red-600 text-sm mt-1">This summary is required.</p>
         )}
       </div>
     </div>

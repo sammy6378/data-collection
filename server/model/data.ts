@@ -68,7 +68,7 @@ const dataSchema = new mongoose.Schema<Data>({
         type: [
             {
                 organization: { type: String, required: true },
-                years: { type: String, enum: Object.values(Experience), required: true },
+                years: { type: String, required: true }, // Accept any string
             }
         ],
         required: true,
