@@ -32,7 +32,7 @@ export const createData = async (req: Request, res: Response) => {
       cvFile,
     } = req.body as Data;
 
-    // Validate the data here if necessary
+    // Validate required fields
     if (
       !name ||
       !jobTitle ||
@@ -40,11 +40,7 @@ export const createData = async (req: Request, res: Response) => {
       !supervisor ||
       !department ||
       !section ||
-      // !location ||
-      // !country ||
-      // !school ||
       !educationLevel ||
-      !experienceSummary ||
       !experienceList ||
       !experienceList.length ||
       !cvFile
@@ -55,6 +51,18 @@ export const createData = async (req: Request, res: Response) => {
           success: false,
           message: "All required fields must be provided",
         });
+    }
+
+    // Validate each experience entry has required fields
+    for (const exp of experienceList) {
+      if (!exp.organization || !exp.positionHeld || !exp.years || !exp.contributions) {
+        return res
+          .status(400)
+          .json({
+            success: false,
+            message: "All experience fields (organization, position, years, contributions) are required",
+          });
+      }
     }
 
     // Create a new data entry
