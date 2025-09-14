@@ -70,9 +70,9 @@ const dataSchema = new mongoose.Schema<Data>({
         type: [
             {
                 organization: { type: String, required: true },
-                positionHeld: { type: String, required: true },
+                positionHeld: { type: String, required: false }, // Optional for backward compatibility
                 years: { type: String, required: true },
-                contributions: { type: String, required: true },
+                contributions: { type: String, required: false }, // Optional for backward compatibility
             }
         ],
         required: true,

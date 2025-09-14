@@ -53,16 +53,17 @@ export const createData = async (req: Request, res: Response) => {
         });
     }
 
-    // Validate each experience entry has required fields
+    // Validate each experience entry has required fields (backward compatible)
     for (const exp of experienceList) {
-      if (!exp.organization || !exp.positionHeld || !exp.years || !exp.contributions) {
+      if (!exp.organization || !exp.years) {
         return res
           .status(400)
           .json({
             success: false,
-            message: "All experience fields (organization, position, years, contributions) are required",
+            message: "Organization and years are required for each experience entry",
           });
       }
+      // New fields (positionHeld, contributions) are optional for backward compatibility
     }
 
     // Create a new data entry
