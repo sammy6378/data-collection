@@ -27,7 +27,7 @@ export default function FormWrapper() {
       // "country",
     ],
     ["educationLevel"],
-    ["experienceList", "experienceSummary"],
+    ["experienceList"],
     ["cv"],
   ];
 
@@ -71,7 +71,7 @@ export default function FormWrapper() {
       otherEducation: data.otherEducation,
       otherSkills: data.otherSkills,
       experienceList: data.experienceList,
-      experienceSummary: data.experienceSummary,
+      experienceSummary: "", // Send empty string for now, backend still expects it
       cvFile: data.cvFile || "",
     };
     // console.log("JSON data to submit:", jsonData);

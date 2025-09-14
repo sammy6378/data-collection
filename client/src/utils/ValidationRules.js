@@ -13,6 +13,23 @@ export const textRequired = (label = "This field") => ({
   },
 });
 
+// Text validator that accepts "N/A" as valid
+export const textRequiredOrNA = (label = "This field") => ({
+  required: `${label} is required`,
+  validate: {
+    minLengthOrNA: (value) => {
+      if (value && (value.toLowerCase() === "n/a" || value.toLowerCase() === "na")) {
+        return true;
+      }
+      return value && value.length >= 2 || `${label} must be at least 2 characters or "N/A"`;
+    }
+  },
+  maxLength: {
+    value: 100,
+    message: `${label} must be less than 100 characters`,
+  },
+});
+
 export const selectRequired = (label = "Selection") => ({
   required: `Please select a ${label.toLowerCase()}`,
 });
@@ -29,6 +46,23 @@ export const textareaRequired = (label = "Field", min = 10, max = 1000) => ({
   minLength: {
     value: min,
     message: `${label} must be at least ${min} characters`,
+  },
+  maxLength: {
+    value: max,
+    message: `${label} must be less than ${max} characters`,
+  },
+});
+
+// Textarea validator that accepts "N/A" as valid
+export const textareaRequiredOrNA = (label = "Field", min = 10, max = 1000) => ({
+  required: `${label} is required`,
+  validate: {
+    minLengthOrNA: (value) => {
+      if (value && (value.toLowerCase() === "n/a" || value.toLowerCase() === "na")) {
+        return true;
+      }
+      return value && value.length >= min || `${label} must be at least ${min} characters or "N/A"`;
+    }
   },
   maxLength: {
     value: max,
@@ -68,8 +102,9 @@ export const educationValidation = {
 
 // === Grouped Schema for Experience Section ===
 export const experienceValidation = {
-  organization: textRequired("Organization"),
-  years: selectRequired("Years of Experience"),
-  experienceSummary: textareaRequired("Experience summary", 10, 1000),
+  organization: textRequiredOrNA("Organization"),
+  positionHeld: textRequiredOrNA("Position Held"),
+  years: textRequiredOrNA("Duration"),
+  contributions: textareaRequiredOrNA("Contributions", 3, 500),
 };
 

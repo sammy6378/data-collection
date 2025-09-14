@@ -41,9 +41,11 @@ export interface Data {
   educationLevel: Level;
   experienceList: {
     organization: string;
-    years: Experience;
+    positionHeld: string;
+    years: string;
+    contributions: string;
   }[];
-    experienceSummary: string;
+  experienceSummary?: string; // Made optional
   otherEducation?: string;
   otherSkills?: string;
   qualifications?: string;
@@ -68,12 +70,14 @@ const dataSchema = new mongoose.Schema<Data>({
         type: [
             {
                 organization: { type: String, required: true },
-                years: { type: String, required: true }, // Accept any string
+                positionHeld: { type: String, required: false }, // Optional for backward compatibility
+                years: { type: String, required: true },
+                contributions: { type: String, required: false }, // Optional for backward compatibility
             }
         ],
         required: true,
     },
-    experienceSummary: { type: String, required: true },
+    experienceSummary: { type: String, required: false, default: "" },
     otherEducation: { type: String, default: "" },
     otherSkills: { type: String, default: "" },
     qualifications: { type: String, default: "" },

@@ -245,11 +245,24 @@ const AdminDashboard = () => {
                       item.experienceList.length > 0 ? (
                         <ul className="list-disc pl-4">
                           {item.experienceList.map((exp, idx) => (
-                            <li key={idx}>
-                              <span className="font-medium text-gray-700">
-                                {exp.organization}
-                              </span>
-                              {exp.years ? ` (${exp.years})` : ""}
+                            <li key={idx} className="mb-1">
+                              <div className="text-sm">
+                                <span className="font-medium text-gray-700">
+                                  {exp.positionHeld || exp.organization}
+                                </span>
+                                {exp.organization && exp.positionHeld && (
+                                  <span className="text-gray-500">
+                                    {" "}
+                                    at {exp.organization}
+                                  </span>
+                                )}
+                                {exp.years && (
+                                  <span className="text-gray-500">
+                                    {" "}
+                                    ({exp.years})
+                                  </span>
+                                )}
+                              </div>
                             </li>
                           ))}
                         </ul>

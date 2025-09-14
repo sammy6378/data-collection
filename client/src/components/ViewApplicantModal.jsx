@@ -209,43 +209,49 @@ const ViewApplicantModal = ({ applicant, onClose }) => {
             </div>
           </div>
 
-          {/* Experience Section */}
-          {applicant.experienceSummary && (
-            <Section
-              title="Experience Summary"
-              icon={<Target className="w-5 h-5" />}
-              className="mt-8"
-            >
-              <div className="bg-gray-50 rounded-lg p-4 text-gray-700 leading-relaxed">
-                {applicant.experienceSummary}
-              </div>
-            </Section>
-          )}
-
-          {/* Experience List */}
+          {/* Professional Experience */}
           {Array.isArray(applicant.experienceList) &&
             applicant.experienceList.length > 0 && (
               <Section
-                title="Experience Timeline"
+                title="Professional Experience"
                 icon={<Clock className="w-5 h-5" />}
                 className="mt-8"
               >
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {applicant.experienceList.map((exp, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center space-x-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-l-4 border-blue-500"
+                      className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-6 border-l-4 border-blue-500"
                     >
-                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                        <Building className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900">
-                          {exp.organization || "—"}
-                        </h4>
-                        <p className="text-gray-600 text-sm">
-                          {exp.years ? `Years: ${exp.years}` : "Years: —"}
-                        </p>
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Building className="w-6 h-6 text-blue-600" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
+                            <h4 className="font-semibold text-gray-900 text-lg">
+                              {exp.positionHeld || exp.organization || "—"}
+                            </h4>
+                            <span className="text-sm text-gray-500 font-medium">
+                              {exp.years || "—"}
+                            </span>
+                          </div>
+                          {exp.positionHeld && (
+                            <p className="text-gray-700 font-medium mb-3">
+                              {exp.organization || "—"}
+                            </p>
+                          )}
+                          {exp.contributions && (
+                            <div className="bg-white rounded-lg p-4 border border-gray-200">
+                              <h5 className="text-sm font-semibold text-gray-700 mb-2">
+                                Key Contributions:
+                              </h5>
+                              <p className="text-gray-600 text-sm leading-relaxed">
+                                {exp.contributions}
+                              </p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}
