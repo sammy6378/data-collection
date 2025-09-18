@@ -5,13 +5,13 @@ import Footer from "../components/Footer";
 export default function LandingPage() {
   return (
     <>
-      <div className="bg-gradient-to-b from-blue-100 to-white">
-  <HeroSection />
+      <div className="bg-gradient-to-b from-green-100 to-white">
+        <HeroSection />
 
-  {/* <div className="border-t border-gray-300 mx-auto max-w-6xl" /> */}
+        {/* <div className="border-t border-gray-300 mx-auto max-w-6xl" /> */}
 
-  <AboutSection />
-</div>
+        <AboutSection />
+      </div>
 
       <Footer />
     </>

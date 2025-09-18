@@ -19,17 +19,23 @@ export default function HeroSection() {
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
         {/* Text Content */}
         <div className="text-center md:text-left md:w-1/2 space-y-6">
+          <img
+            src="/images/akesk-logo.png"
+            alt="AKESK Logo"
+            className="mx-auto md:mx-0 w-64 md:w-80 mb-4 object-contain drop-shadow-lg"
+          />
           <h1 className="text-4xl md:text-5xl font-bold">
-            Aga Khan Education Services, Kenya.
+            Aga Khan Education Service, Kenya.
           </h1>
           <p className="text-lg md:text-xl text-gray-700">
-            Help us capture accurate and up-to-date professional and academic data through this form.
+            Help us capture accurate and up-to-date professional and academic
+            data through this form.
           </p>
 
           <button
             onClick={handleStart}
             disabled={loading}
-            className={`inline-flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition hover:bg-blue-700 disabled:opacity-50`}
+            className={`inline-flex items-center justify-center gap-2 bg-green-800 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition hover:bg-green-700 disabled:opacity-50`}
           >
             {loading ? (
               <>
