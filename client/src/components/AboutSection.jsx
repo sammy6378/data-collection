@@ -26,7 +26,7 @@ export default function AboutSection() {
         <div className="fixed inset-0 bg-white/80 z-50 flex items-center justify-center">
           <div className="flex flex-col items-center gap-4">
             <svg
-              className="animate-spin h-10 w-10 text-blue-600"
+              className="animate-spin h-10 w-10 text-green-800"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -45,7 +45,9 @@ export default function AboutSection() {
                 d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
               ></path>
             </svg>
-            <p className="text-blue-700 font-medium text-lg">Loading form...</p>
+            <p className="text-green-700 font-medium text-lg">
+              Loading form...
+            </p>
           </div>
         </div>
       )}
@@ -55,10 +57,13 @@ export default function AboutSection() {
 
         {/* Desktop */}
         <div className="hidden md:flex justify-between items-start relative mb-16 max-w-4xl mx-auto">
-          <div className="absolute top-6 left-0 w-full h-1 bg-blue-200 z-0"></div>
+          <div className="absolute top-6 left-0 w-full h-1 bg-green-200 z-0"></div>
           {steps.map((text, index) => (
-            <div key={index} className="relative z-10 flex flex-col items-center w-1/4">
-              <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-lg font-bold mb-4">
+            <div
+              key={index}
+              className="relative z-10 flex flex-col items-center w-1/4"
+            >
+              <div className="w-12 h-12 bg-green-800 text-white rounded-full flex items-center justify-center text-lg font-bold mb-4">
                 {index + 1}
               </div>
               <p className="text-base font-medium text-gray-800">{text}</p>
@@ -68,13 +73,15 @@ export default function AboutSection() {
 
         {/* Mobile */}
         <div className="relative flex flex-col md:hidden items-start gap-10 mb-16 pl-4">
-          <div className="absolute top-0 left-6 h-full w-1 bg-blue-200 z-0"></div>
+          <div className="absolute top-0 left-6 h-full w-1 bg-green-200 z-0"></div>
           {steps.map((text, index) => (
             <div key={index} className="relative z-10 flex items-center gap-4">
-              <div className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-base">
+              <div className="w-10 h-10 bg-green-800 text-white rounded-full flex items-center justify-center font-bold text-base">
                 {index + 1}
               </div>
-              <p className="text-base font-medium text-gray-800 max-w-xs">{text}</p>
+              <p className="text-base font-medium text-gray-800 max-w-xs">
+                {text}
+              </p>
             </div>
           ))}
         </div>
@@ -86,29 +93,26 @@ export default function AboutSection() {
         <button
           onClick={handleStart}
           disabled={loading}
-          className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold py-3 px-6 rounded-full shadow-md hover:bg-blue-700 transition disabled:opacity-50"
+          className="inline-flex items-center justify-center gap-2 bg-green-800 text-white font-semibold py-3 px-6 rounded-full shadow-md hover:bg-green-700 transition disabled:opacity-50"
         >
           {loading ? (
             <>
-           <svg
-  className="h-16 w-16 text-blue-600"
-  style={{ animation: "spin 1.2s linear infinite" }}
-  xmlns="http://www.w3.org/2000/svg"
-  fill="none"
-  viewBox="0 0 50 50"
->
-  <circle
-    cx="25"
-    cy="25"
-    r="20"
-    stroke="currentColor"
-    strokeWidth="2"
-    fill="none"
-  />
-</svg>
-
-
-
+              <svg
+                className="h-16 w-16 text-green-800"
+                style={{ animation: "spin 1.2s linear infinite" }}
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 50 50"
+              >
+                <circle
+                  cx="25"
+                  cy="25"
+                  r="20"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  fill="none"
+                />
+              </svg>
               Loading...
             </>
           ) : (

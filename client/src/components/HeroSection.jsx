@@ -23,13 +23,14 @@ export default function HeroSection() {
             Aga Khan Education Services, Kenya.
           </h1>
           <p className="text-lg md:text-xl text-gray-700">
-            Help us capture accurate and up-to-date professional and academic data through this form.
+            Help us capture accurate and up-to-date professional and academic
+            data through this form.
           </p>
 
           <button
             onClick={handleStart}
             disabled={loading}
-            className={`inline-flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition hover:bg-blue-700 disabled:opacity-50`}
+            className={`inline-flex items-center justify-center gap-2 bg-green-800 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition hover:bg-green-700 disabled:opacity-50`}
           >
             {loading ? (
               <>
