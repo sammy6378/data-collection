@@ -120,13 +120,13 @@ export default function AboutSection() {
           )}
         </button>
         {/* Large Centered Logo Below */}
-        <div className="w-full flex justify-center mt-16">
+        {/* <div className="w-full flex justify-center mt-16">
           <img
             src="/images/logo-below-image.png"
             alt="Logo Below"
             className="w-64 md:w-96 lg:w-[32rem] object-contain drop-shadow-xl"
           />
-        </div>
+        </div> */}
       </div>
     </section>
   );
