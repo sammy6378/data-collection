@@ -50,6 +50,7 @@ export interface Data {
   otherSkills?: string;
   qualifications?: string;
   cvFile: string;
+  dataConsent: boolean;
 }
 
 
@@ -83,7 +84,10 @@ const dataSchema = new mongoose.Schema<Data>({
     qualifications: { type: String, default: "" },
     
     // section 4 -cv file
-    cvFile: { type: String, required: true }
+    cvFile: { type: String, required: true },
+    
+    // data consent
+    dataConsent: { type: Boolean, required: true }
 },{timestamps: true});
 
 

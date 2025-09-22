@@ -29,8 +29,12 @@ export const createData = async (req: Request, res: Response) => {
       otherSkills,
       experienceSummary,
       experienceList,
+      dataConsent,
       cvFile,
     } = req.body as Data;
+
+    // Debug: Log the dataConsent value
+    console.log('DataConsent received:', dataConsent, typeof dataConsent);
 
     // Validate required fields
     if (
@@ -43,13 +47,14 @@ export const createData = async (req: Request, res: Response) => {
       !educationLevel ||
       !experienceList ||
       !experienceList.length ||
-      !cvFile
+      !cvFile ||
+      !dataConsent
     ) {
       return res
         .status(400)
         .json({
           success: false,
-          message: "All required fields must be provided",
+          message: "All required fields must be provided and consent must be given",
         });
     }
 
@@ -67,7 +72,7 @@ export const createData = async (req: Request, res: Response) => {
     }
 
     // Create a new data entry
-    const saved = await DataModel.create({
+        const newData = new DataModel({
       name,
       jobTitle,
       jobType,
@@ -81,10 +86,15 @@ export const createData = async (req: Request, res: Response) => {
       qualifications,
       otherEducation,
       otherSkills,
-      experienceSummary,
       experienceList,
+      experienceSummary,
       cvFile,
+      dataConsent: Boolean(dataConsent), // Ensure it's a boolean
     });
+
+    // Save the data to database
+    const saved = await newData.save();
+    
     res.status(201).json({
       success: true,
       message: "Data created successfully",
