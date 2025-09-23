@@ -21,14 +21,14 @@ export default function HeroSection() {
         <div className="text-center md:text-left md:w-1/2 space-y-6">
           <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
             <img
-              src="/images/logo-below.png"
+              src="/images/agaKhanLogo.png"
               alt="Logo Below"
-              className="w-16 md:w-20 object-contain drop-shadow-lg"
+              className="w-22 md:w-32 object-contain drop-shadow-lg"
             />
             <img
               src="/images/akesk-logo.png"
               alt="AKESK Logo"
-              className="w-48 md:w-60 object-contain drop-shadow-lg"
+              className="w-54 md:w-120 object-contain drop-shadow-lg"
             />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold">
