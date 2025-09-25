@@ -28,7 +28,7 @@ export default function FormWrapper() {
     ],
     ["educationLevel"],
     ["experienceList"],
-    ["cv", "dataConsent"],
+    ["cv"],
   ];
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -73,7 +73,7 @@ export default function FormWrapper() {
       experienceList: data.experienceList,
       experienceSummary: "", // Send empty string for now, backend still expects it
       cvFile: data.cvFile || "",
-      dataConsent: data.dataConsent || false,
+      dataConsent: sessionStorage.getItem("dataConsent") === "true",
     };
     // console.log("JSON data to submit:", jsonData);
     setIsSubmitting(true);
