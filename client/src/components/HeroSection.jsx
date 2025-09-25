@@ -21,25 +21,20 @@ export default function HeroSection() {
         <div className="text-center md:text-left md:w-1/2 space-y-6">
           <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
             <img
-              src="/images/agaKhanLogo.png"
-              alt="Logo Below"
-              className="w-22 md:w-32 object-contain drop-shadow-lg"
-            />
-            <img
-              src="/images/akesk-logo.png"
+              src="/images/logo2.png"
               alt="AKESK Logo"
               className="w-54 md:w-120 object-contain drop-shadow-lg"
             />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold">
+          {/* <h1 className="text-4xl md:text-5xl font-bold">
             Aga Khan Education Service, Kenya.
-          </h1>
+          </h1> */}
           <p className="text-lg md:text-xl text-gray-700">
             Help us capture accurate and up-to-date professional and academic
             data through this form.
           </p>
 
-          <button
+          {/* <button
             onClick={handleStart}
             disabled={loading}
             className={`inline-flex items-center justify-center gap-2 bg-green-800 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition hover:bg-green-700 disabled:opacity-50`}
@@ -71,7 +66,7 @@ export default function HeroSection() {
             ) : (
               "Get Started"
             )}
-          </button>
+          </button> */}
         </div>
 
         {/* Verge Logo */}
