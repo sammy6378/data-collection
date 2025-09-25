@@ -23,7 +23,7 @@ export default function HeroSection() {
             <img
               src="/images/logo2.png"
               alt="AKESK Logo"
-              className="w-54 md:w-120 object-contain drop-shadow-lg"
+              className="w-94 md:w-96 lg:w-120 object-contain drop-shadow-lg"
             />
           </div>
           {/* <h1 className="text-4xl md:text-5xl font-bold">
