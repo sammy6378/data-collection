@@ -66,6 +66,7 @@ const AdminDashboard = () => {
   const [filtered, setFiltered] = useState([]);
   const [jobTypeFilter, setJobTypeFilter] = useState("");
   const [eduFilter, setEduFilter] = useState("");
+  const [searchQuery, setSearchQuery] = useState(""); // ✅ search query state
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true); // ✅ loading state
   const [autoRefresh, setAutoRefresh] = useState(true); // ✅ auto refresh toggle
@@ -75,14 +76,35 @@ const AdminDashboard = () => {
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
-  const url = import.meta.env.VITE_API_URL;
+  // Use proxy in development, direct URL in production
+  const url = import.meta.env.DEV
+    ? "/api"
+    : import.meta.env.VITE_API_URL || "http://localhost:8000";
+  console.log("🔧 API URL configured as:", url);
+  console.log("🔧 Environment variables:", import.meta.env);
 
   // Function to fetch data
   const fetchData = () => {
     setLoading(true);
-    fetch(`${url}/get-data`)
-      .then((res) => res.json())
+    console.log("🔄 Fetching data from:", `${url}/get-data`);
+
+    fetch(`${url}/get-data`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        console.log("📡 Response status:", res.status);
+        console.log("📡 Response headers:", res.headers);
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => {
+        console.log("✅ Data received:", data);
         const sorted = data.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
@@ -93,7 +115,31 @@ const AdminDashboard = () => {
       })
       .catch((err) => {
         console.error("❌ Fetch error:", err);
-        setLoading(false);
+        console.error("❌ Error details:", {
+          name: err.name,
+          message: err.message,
+          stack: err.stack,
+        });
+
+        // Try a simpler fetch as fallback
+        console.log("🔄 Attempting fallback fetch...");
+        return fetch(`${url}/get-data`)
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("✅ Fallback fetch successful:", data);
+            const sorted = data.data.sort(
+              (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            );
+            setSubmissions(sorted);
+            setFiltered(sorted);
+            setLastUpdated(new Date());
+          })
+          .catch((fallbackErr) => {
+            console.error("❌ Fallback fetch also failed:", fallbackErr);
+          })
+          .finally(() => {
+            setLoading(false);
+          });
       });
   };
 
@@ -116,11 +162,32 @@ const AdminDashboard = () => {
     const filteredData = submissions.filter((sub) => {
       const jobMatch = jobTypeFilter ? sub.jobType === jobTypeFilter : true;
       const eduMatch = eduFilter ? sub.educationLevel === eduFilter : true;
-      return jobMatch && eduMatch;
+
+      // Search functionality - search across multiple fields
+      const searchMatch = searchQuery
+        ? sub.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          sub.jobTitle?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          sub.jobType?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          sub.educationLevel
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          (Array.isArray(sub.experienceList) &&
+            sub.experienceList.some(
+              (exp) =>
+                exp.positionHeld
+                  ?.toLowerCase()
+                  .includes(searchQuery.toLowerCase()) ||
+                exp.organization
+                  ?.toLowerCase()
+                  .includes(searchQuery.toLowerCase())
+            ))
+        : true;
+
+      return jobMatch && eduMatch && searchMatch;
     });
     setFiltered(filteredData);
     setPage(1); // reset page when filters change
-  }, [jobTypeFilter, eduFilter, submissions]);
+  }, [jobTypeFilter, eduFilter, searchQuery, submissions]);
 
   const paginated = filtered.slice(
     (page - 1) * itemsPerPage,
@@ -179,9 +246,34 @@ const AdminDashboard = () => {
         )}
       </div>
 
-      {/* Filters */}
+      {/* Search and Filters */}
       <div className="flex flex-wrap gap-4 mb-6">
+        {/* Search Input */}
+        <div className="relative flex-1 min-w-[250px]">
+          <input
+            type="text"
+            placeholder="Search by name, job title, education, or experience..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-white border border-gray-300 rounded px-3 py-2 pl-10 shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <svg
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
         <select
+          value={jobTypeFilter}
           onChange={(e) => setJobTypeFilter(e.target.value)}
           className="bg-white border border-gray-300 rounded px-3 py-2 shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
@@ -191,16 +283,31 @@ const AdminDashboard = () => {
           <option value="Contract">Contract</option>
         </select>
         <select
+          value={eduFilter}
           onChange={(e) => setEduFilter(e.target.value)}
           className="bg-white border border-gray-300 rounded px-3 py-2 shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Filter by Education</option>
           <option value="High School Only">High School Only</option>
           <option value="Diploma/Professional Qualification">Diploma</option>
-          <option value="Master’s + Diploma/Professional Qualification">
+          <option value="Master's + Diploma/Professional Qualification">
             Master's + Diploma
           </option>
         </select>
+
+        {/* Clear Filters Button */}
+        {(searchQuery || jobTypeFilter || eduFilter) && (
+          <button
+            onClick={() => {
+              setSearchQuery("");
+              setJobTypeFilter("");
+              setEduFilter("");
+            }}
+            className="px-3 py-2 bg-gray-100 text-gray-600 rounded text-sm hover:bg-gray-200 transition border border-gray-300"
+          >
+            Clear All
+          </button>
+        )}
       </div>
 
       {/* Content Display */}
@@ -211,7 +318,7 @@ const AdminDashboard = () => {
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center text-gray-500 my-10">
-          ❗ No submissions found with the current filters.
+          ❗ No submissions found with the current search criteria and filters.
         </div>
       ) : (
         <>
