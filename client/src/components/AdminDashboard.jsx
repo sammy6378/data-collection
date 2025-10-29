@@ -80,14 +80,10 @@ const AdminDashboard = () => {
   const url = import.meta.env.DEV
     ? "/api"
     : import.meta.env.VITE_API_URL || "http://localhost:8000";
-  console.log("🔧 API URL configured as:", url);
-  console.log("🔧 Environment variables:", import.meta.env);
 
   // Function to fetch data
   const fetchData = () => {
     setLoading(true);
-    console.log("🔄 Fetching data from:", `${url}/get-data`);
-
     fetch(`${url}/get-data`, {
       method: "GET",
       headers: {
@@ -96,15 +92,12 @@ const AdminDashboard = () => {
       },
     })
       .then((res) => {
-        console.log("📡 Response status:", res.status);
-        console.log("📡 Response headers:", res.headers);
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
         return res.json();
       })
       .then((data) => {
-        console.log("✅ Data received:", data);
         const sorted = data.data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
@@ -122,11 +115,9 @@ const AdminDashboard = () => {
         });
 
         // Try a simpler fetch as fallback
-        console.log("🔄 Attempting fallback fetch...");
         return fetch(`${url}/get-data`)
           .then((res) => res.json())
           .then((data) => {
-            console.log("✅ Fallback fetch successful:", data);
             const sorted = data.data.sort(
               (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
             );
