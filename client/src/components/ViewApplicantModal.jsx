@@ -1,4 +1,5 @@
-import React from "react";
+import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
   X,
   User,
@@ -9,10 +10,7 @@ import {
   Building,
   Calendar,
   Download,
-  Mail,
-  Phone,
   Award,
-  Target,
 } from "lucide-react";
 
 // Utility function to format date
@@ -73,227 +71,175 @@ const formatDate = (dateString) => {
 };
 
 const ViewApplicantModal = ({ applicant, onClose }) => {
+  const isOpen = !!applicant;
+
+  // ESC key to close
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [isOpen, onClose]);
+
+  // Prevent body scroll when drawer is open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
+
   if (!applicant) return null;
 
   const getJobTypeColor = (jobType) => {
     switch (jobType?.toLowerCase()) {
-      case "permanent":
-        return "bg-green-100 text-green-800 border-green-200";
-      case "contractual":
-        return "bg-blue-100 text-blue-800 border-blue-200";
-      case "intern":
-        return "bg-purple-100 text-purple-800 border-purple-200";
-      case "volunteer":
-        return "bg-orange-100 text-orange-800 border-orange-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+      case "permanent":   return "bg-green-100 text-green-800 border-green-200";
+      case "contractual": return "bg-blue-100 text-blue-800 border-blue-200";
+      case "intern":      return "bg-purple-100 text-purple-800 border-purple-200";
+      case "volunteer":   return "bg-orange-100 text-orange-800 border-orange-200";
+      default:            return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
-      <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl border border-gray-100 animate-in slide-in-from-bottom-4 duration-300">
-        {/* Header */}
-        <div className="relative bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-6 text-white">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 p-2 rounded-full hover:bg-white/20 transition-colors duration-200 group"
-          >
-            <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200" />
-          </button>
+  return createPortal(
+    <div className="fixed inset-0 z-50 flex">
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300"
+        onClick={onClose}
+        aria-hidden="true"
+      />
 
-          <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-              <User className="w-8 h-8" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold">{applicant.name}</h2>
-              <p className="text-blue-100 text-lg">{applicant.jobTitle}</p>
-              <div className="flex items-center space-x-2 mt-2">
-                <span
-                  className={`px-3 py-1 rounded-full text-xs font-medium border ${getJobTypeColor(
-                    applicant.jobType
-                  )}`}
-                >
-                  {applicant.jobType}
-                </span>
-                <span className="text-blue-200 text-sm flex items-center">
-                  <Calendar className="w-4 h-4 mr-1" />
-                  {applicant.createdAt ? formatDate(applicant.createdAt) : "—"}
-                </span>
+      {/* Drawer */}
+      <aside
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${applicant.name} details`}
+        className="relative ml-auto w-full max-w-2xl h-full bg-white shadow-2xl flex flex-col
+                   animate-[slideInRight_0.3s_ease-out]"
+        style={{ animation: "slideInRight 0.3s ease-out" }}
+      >
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-5 text-white flex-shrink-0">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                <User className="w-7 h-7" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold leading-tight">{applicant.name}</h2>
+                <p className="text-blue-100">{applicant.jobTitle}</p>
+                <div className="flex items-center gap-2 mt-2 flex-wrap">
+                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium border ${getJobTypeColor(applicant.jobType)}`}>
+                    {applicant.jobType}
+                  </span>
+                  <span className="text-blue-200 text-xs flex items-center gap-1">
+                    <Calendar className="w-3.5 h-3.5" />
+                    {applicant.createdAt ? formatDate(applicant.createdAt) : "—"}
+                  </span>
+                </div>
               </div>
             </div>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-full hover:bg-white/20 transition-colors group flex-shrink-0"
+              aria-label="Close drawer"
+            >
+              <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-200" />
+            </button>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-8 overflow-y-auto max-h-[calc(90vh-200px)]">
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {/* Quick Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <InfoCard
-              icon={<MapPin className="w-5 h-5" />}
-              title="Location"
-              value={`${applicant.location}, ${applicant.country}`}
-              bgColor="bg-emerald-50"
-              iconColor="text-emerald-600"
-            />
-            <InfoCard
-              icon={<GraduationCap className="w-5 h-5" />}
-              title="Education"
-              value={applicant.educationLevel}
-              bgColor="bg-purple-50"
-              iconColor="text-purple-600"
-            />
-            <InfoCard
-              icon={<Building className="w-5 h-5" />}
-              title="Department"
-              value={applicant.department}
-              bgColor="bg-blue-50"
-              iconColor="text-blue-600"
-            />
+          <div className="grid grid-cols-3 gap-3">
+            <InfoCard icon={<MapPin className="w-4 h-4" />} title="Location" value={[applicant.location, applicant.country].filter(Boolean).join(", ")} bgColor="bg-emerald-50" iconColor="text-emerald-600" />
+            <InfoCard icon={<GraduationCap className="w-4 h-4" />} title="Education" value={applicant.educationLevel} bgColor="bg-purple-50" iconColor="text-purple-600" />
+            <InfoCard icon={<Building className="w-4 h-4" />} title="Department" value={applicant.department} bgColor="bg-blue-50" iconColor="text-blue-600" />
           </div>
 
-          {/* Main Details Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Left Column */}
-            <div className="space-y-6">
-              <Section
-                title="Professional Information"
-                icon={<Briefcase className="w-5 h-5" />}
-              >
-                <DetailItem label="Job Title" value={applicant.jobTitle} />
-                <DetailItem label="Job Type" value={applicant.jobType} />
-                <DetailItem label="Supervisor" value={applicant.supervisor} />
-                <DetailItem label="Department" value={applicant.department} />
-                <DetailItem label="Section" value={applicant.section} />
-              </Section>
+          {/* Professional Info */}
+          <Section title="Professional Information" icon={<Briefcase className="w-4 h-4" />}>
+            <DetailItem label="Job Title"   value={applicant.jobTitle} />
+            <DetailItem label="Job Type"    value={applicant.jobType} />
+            <DetailItem label="Supervisor"  value={applicant.supervisor} />
+            <DetailItem label="Department"  value={applicant.department} />
+            <DetailItem label="Section"     value={applicant.section} />
+          </Section>
 
-              <Section
-                title="Location Details"
-                icon={<MapPin className="w-5 h-5" />}
-              >
-                <DetailItem label="Location" value={applicant.location} />
-                <DetailItem label="Country" value={applicant.country} />
-              </Section>
-            </div>
+          {/* Location */}
+          <Section title="Location Details" icon={<MapPin className="w-4 h-4" />}>
+            <DetailItem label="Location" value={applicant.location} />
+            <DetailItem label="Country"  value={applicant.country} />
+          </Section>
 
-            {/* Right Column */}
-            <div className="space-y-6">
-              <Section
-                title="Education & Qualifications"
-                icon={<GraduationCap className="w-5 h-5" />}
-              >
-                <DetailItem
-                  label="Education Level"
-                  value={applicant.educationLevel}
-                />
-                {applicant.qualifications && (
-                  <DetailItem
-                    label="Qualifications"
-                    value={applicant.qualifications}
-                  />
-                )}
-                {applicant.otherEducation && (
-                  <DetailItem
-                    label="Other Education"
-                    value={applicant.otherEducation}
-                  />
-                )}
-                {applicant.otherSkills && (
-                  <DetailItem
-                    label="Other Skills"
-                    value={applicant.otherSkills}
-                  />
-                )}
-              </Section>
-            </div>
-          </div>
+          {/* Education */}
+          <Section title="Education & Qualifications" icon={<GraduationCap className="w-4 h-4" />}>
+            <DetailItem label="Education Level"  value={applicant.educationLevel} />
+            {applicant.qualifications  && <DetailItem label="Qualifications"  value={applicant.qualifications} />}
+            {applicant.otherEducation  && <DetailItem label="Other Education" value={applicant.otherEducation} />}
+            {applicant.otherSkills     && <DetailItem label="Other Skills"    value={applicant.otherSkills} />}
+          </Section>
 
-          {/* Professional Experience */}
-          {Array.isArray(applicant.experienceList) &&
-            applicant.experienceList.length > 0 && (
-              <Section
-                title="Professional Experience"
-                icon={<Clock className="w-5 h-5" />}
-                className="mt-8"
-              >
-                <div className="space-y-4">
-                  {applicant.experienceList.map((exp, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-6 border-l-4 border-blue-500"
-                    >
-                      <div className="flex items-start space-x-4">
-                        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Building className="w-6 h-6 text-blue-600" />
+          {/* Experience */}
+          {Array.isArray(applicant.experienceList) && applicant.experienceList.length > 0 && (
+            <Section title="Professional Experience" icon={<Clock className="w-4 h-4" />}>
+              <div className="space-y-3">
+                {applicant.experienceList.map((exp, idx) => (
+                  <div key={idx} className="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-500">
+                    <div className="flex items-start gap-3">
+                      <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Building className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <p className="font-semibold text-gray-900 truncate">{exp.positionHeld || exp.organization || "—"}</p>
+                          <span className="text-xs text-gray-500 flex-shrink-0">{exp.years || "—"}</span>
                         </div>
-                        <div className="flex-1">
-                          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2">
-                            <h4 className="font-semibold text-gray-900 text-lg">
-                              {exp.positionHeld || exp.organization || "—"}
-                            </h4>
-                            <span className="text-sm text-gray-500 font-medium">
-                              {exp.years || "—"}
-                            </span>
+                        {exp.positionHeld && <p className="text-sm text-gray-600 mb-2">{exp.organization || "—"}</p>}
+                        {exp.contributions && (
+                          <div className="bg-white rounded p-3 border border-gray-200">
+                            <p className="text-xs font-semibold text-gray-600 mb-1">Key Contributions</p>
+                            <p className="text-sm text-gray-600 leading-relaxed">{exp.contributions}</p>
                           </div>
-                          {exp.positionHeld && (
-                            <p className="text-gray-700 font-medium mb-3">
-                              {exp.organization || "—"}
-                            </p>
-                          )}
-                          {exp.contributions && (
-                            <div className="bg-white rounded-lg p-4 border border-gray-200">
-                              <h5 className="text-sm font-semibold text-gray-700 mb-2">
-                                Key Contributions:
-                              </h5>
-                              <p className="text-gray-600 text-sm leading-relaxed">
-                                {exp.contributions}
-                              </p>
-                            </div>
-                          )}
-                        </div>
+                        )}
                       </div>
                     </div>
-                  ))}
-                </div>
-              </Section>
-            )}
+                  </div>
+                ))}
+              </div>
+            </Section>
+          )}
 
-          {/* CV Download Section */}
-          <Section
-            title="Documents"
-            icon={<Award className="w-5 h-5" />}
-            className="mt-8"
-          >
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border border-blue-200">
+          {/* CV */}
+          <Section title="Documents" icon={<Award className="w-4 h-4" />}>
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
               {applicant.cvFile ? (
                 <a
                   href={applicant.cvFile}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center space-x-3 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium transition-all duration-200 shadow hover:shadow-md"
                 >
-                  <Download className="w-5 h-5" />
-                  <span>Download CV</span>
+                  <Download className="w-4 h-4" />
+                  Download CV
                 </a>
               ) : (
-                <div className="flex items-center space-x-3 text-gray-500">
-                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                    <Award className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <p className="font-medium">No CV uploaded</p>
-                    <p className="text-sm">
-                      CV not available for this applicant
-                    </p>
-                  </div>
-                </div>
+                <p className="text-sm text-gray-500">No CV uploaded for this applicant.</p>
               )}
             </div>
           </Section>
         </div>
-      </div>
-    </div>
+      </aside>
+
+      <style>{`
+        @keyframes slideInRight {
+          from { transform: translateX(100%); opacity: 0; }
+          to   { transform: translateX(0);    opacity: 1; }
+        }
+      `}</style>
+    </div>,
+    document.body
   );
 };
 
