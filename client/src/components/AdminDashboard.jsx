@@ -68,9 +68,7 @@ const AdminDashboard = () => {
   const [eduFilter, setEduFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState(""); // ✅ search query state
   const [selected, setSelected] = useState(null);
-  const [loading, setLoading] = useState(true); // ✅ loading state
-  const [autoRefresh, setAutoRefresh] = useState(true); // ✅ auto refresh toggle
-  const [lastUpdated, setLastUpdated] = useState(null); // ✅ last update time
+  const [loading, setLoading] = useState(true);
 
   // Pagination
   const [page, setPage] = useState(1);
@@ -103,7 +101,6 @@ const AdminDashboard = () => {
         );
         setSubmissions(sorted);
         setFiltered(sorted);
-        setLastUpdated(new Date());
         setLoading(false);
       })
       .catch((err) => {
@@ -123,7 +120,6 @@ const AdminDashboard = () => {
             );
             setSubmissions(sorted);
             setFiltered(sorted);
-            setLastUpdated(new Date());
           })
           .catch((fallbackErr) => {
             console.error("❌ Fallback fetch also failed:", fallbackErr);
@@ -137,17 +133,6 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  // Auto refresh effect
-  useEffect(() => {
-    if (!autoRefresh) return;
-
-    const interval = setInterval(() => {
-      fetchData();
-    }, 30000); // Refresh every 30 seconds
-
-    return () => clearInterval(interval);
-  }, [autoRefresh]);
 
   useEffect(() => {
     const filteredData = submissions.filter((sub) => {
