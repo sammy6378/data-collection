@@ -235,8 +235,9 @@ const AdminDashboard = () => {
         >
           <option value="">Filter by Job Type</option>
           <option value="Permanent">Permanent</option>
-          <option value="Internship">Internship</option>
-          <option value="Contract">Contract</option>
+          <option value="Contractual">Contractual</option>
+          <option value="Intern">Intern</option>
+          <option value="Volunteer">Volunteer</option>
         </select>
         <select
           value={eduFilter}
@@ -245,10 +246,13 @@ const AdminDashboard = () => {
         >
           <option value="">Filter by Education</option>
           <option value="High School Only">High School Only</option>
-          <option value="Diploma/Professional Qualification">Diploma</option>
-          <option value="Master's + Diploma/Professional Qualification">
-            Master's + Diploma
-          </option>
+          <option value="High School + College Diploma/Professional Qualification">High School + Diploma</option>
+          <option value="Bachelor's Degree">Bachelor's Degree</option>
+          <option value="Bachelor's + Additional Diploma/Professional Qualification">Bachelor's + Diploma</option>
+          <option value="Master's Qualification">Master's Qualification</option>
+          <option value="Master's + Diploma/Professional Qualification">Master's + Diploma</option>
+          <option value="PhD">PhD</option>
+          <option value="PhD + Diploma/Professional Qualification">PhD + Diploma</option>
         </select>
 
         {/* Clear Filters Button */}
