@@ -210,31 +210,11 @@ const AdminDashboard = () => {
         </h2>
       </div>
 
-      {/* Auto Refresh Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
-        <div className="flex items-center gap-4">
-          <label className="flex items-center gap-2 text-sm text-gray-700">
-            <input
-              type="checkbox"
-              checked={autoRefresh}
-              onChange={(e) => setAutoRefresh(e.target.checked)}
-              className="rounded border-gray-300 focus:ring-2 focus:ring-blue-500"
-            />
-            Auto-refresh (30s)
-          </label>
-          <button
-            onClick={fetchData}
-            disabled={loading}
-            className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition disabled:opacity-50"
-          >
-            {loading ? "Refreshing..." : "Refresh Now"}
-          </button>
-        </div>
-        {lastUpdated && (
-          <div className="text-xs text-gray-500">
-            Last updated: {formatDate(lastUpdated.toISOString())}
-          </div>
-        )}
+      {/* Submissions Total */}
+      <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+        <p className="text-sm text-gray-700">
+          Total Submissions: <strong>{submissions.length}</strong>
+        </p>
       </div>
 
       {/* Search and Filters */}
