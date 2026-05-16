@@ -11,6 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://127.0.0.1:5173",
   "https://data-collection-ruby.vercel.app",
   "https://data-collection-v4gr.onrender.com",
 ];
