@@ -97,10 +97,10 @@ export default function FormWrapper() {
       if (!res.ok) {
         console.error("❌ Server error:", json);
         if (json.errors) {
-          const messages = Object.values(json.errors).join("<br/>");
+          const messages = Object.values(json.errors).join("\n");
           showModal(
             "Submission Failed",
-            `Failed to save your data, try again:<br/>${messages}`,
+            `Failed to save your data, try again:\n${messages}`,
             "error"
           );
         } else {
@@ -207,9 +207,10 @@ export default function FormWrapper() {
               {modal.title}
             </h3>
             <div
-              className="mb-4 text-gray-700"
-              dangerouslySetInnerHTML={{ __html: modal.message }}
-            />
+              className="mb-4 text-gray-700 whitespace-pre-line"
+            >
+              {modal.message}
+            </div>
             <button
               onClick={closeModal}
               className="mt-2 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition font-semibold"
