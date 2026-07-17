@@ -12,7 +12,6 @@ export default function FileUploadSection() {
   } = useFormContext();
   const [fileName, setFileName] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [_uploadProgress, setUploadProgress] = useState(0);
   const [uploadedUrl, setUploadedUrl] = useState(null);
   const [uploadError, setUploadError] = useState(null);
 
@@ -28,39 +27,32 @@ export default function FileUploadSection() {
   // Also register the cvFile field that will store the Cloudinary URL
   register("cvFile", { required: "Please upload your CV" });
 
-  // Configure Cloudinary
-  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-  const uploadPreset =
-    import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || "cv_uploads"; // Default preset name
+  const apiBase = import.meta.env.DEV
+    ? "/api"
+    : import.meta.env.VITE_API_URL || "http://localhost:8000";
 
-  const uploadToCloudinary = async (file) => {
+  const uploadToServer = async (file) => {
     const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", uploadPreset);
-    formData.append("cloud_name", cloudName);
+    formData.append("cv", file);
 
     try {
       setUploading(true);
       setUploadError(null);
-      setUploadProgress(0);
 
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${cloudName}/raw/upload`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${apiBase}/upload-cv`, {
+        method: "POST",
+        body: formData,
+      });
 
       if (!response.ok) {
-        throw new Error("Upload failed");
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.message || "Upload failed");
       }
 
       const data = await response.json();
-      return data.secure_url;
+      return data.url;
     } catch (error) {
-      console.error("Error uploading to Cloudinary:", error);
-      setUploadError("Failed to upload file. Please try again.");
+      setUploadError(error.message || "Failed to upload file. Please try again.");
       throw error;
     } finally {
       setUploading(false);
@@ -78,14 +70,12 @@ export default function FileUploadSection() {
       setUploadError(null);
 
       try {
-        // Upload to Cloudinary
-        const url = await uploadToCloudinary(selectedFile);
+        // Upload to server (which proxies to Cloudinary)
+        const url = await uploadToServer(selectedFile);
         setUploadedUrl(url);
 
         // Set the Cloudinary URL in the form
         setValue("cvFile", url);
-
-        console.log("File uploaded successfully:", url);
       } catch (error) {
         console.error("Upload failed:", error);
         // Clear the file input on error
