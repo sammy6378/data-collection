@@ -33,8 +33,12 @@ export const createData = async (req: Request, res: Response) => {
       cvFile,
     } = req.body as Data;
 
-    // Debug: Log the dataConsent value
-    console.log('DataConsent received:', dataConsent, typeof dataConsent);
+    // Validate that cvFile is a legitimate Cloudinary URL
+    const isValidCloudinaryUrl = (url: string) =>
+      /^https:\/\/res\.cloudinary\.com\/.+/.test(url);
+    if (cvFile && !isValidCloudinaryUrl(cvFile)) {
+      return res.status(400).json({ success: false, message: "Invalid CV file URL" });
+    }
 
     // Validate required fields
     if (
