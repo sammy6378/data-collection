@@ -70,6 +70,13 @@ const AdminDashboard = () => {
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Auth state
+  const [adminToken, setAdminToken] = useState(
+    () => sessionStorage.getItem("adminToken") || ""
+  );
+  const [tokenInput, setTokenInput] = useState("");
+  const [authError, setAuthError] = useState("");
+
   // Pagination
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
@@ -87,9 +94,17 @@ const AdminDashboard = () => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${adminToken}`,
       },
     })
       .then((res) => {
+        if (res.status === 401 || res.status === 403) {
+          sessionStorage.removeItem("adminToken");
+          setAdminToken("");
+          setAuthError("Invalid or expired token. Please enter it again.");
+          setLoading(false);
+          throw new Error("Unauthorized");
+        }
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
@@ -104,35 +119,15 @@ const AdminDashboard = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("❌ Fetch error:", err);
-        console.error("❌ Error details:", {
-          name: err.name,
-          message: err.message,
-          stack: err.stack,
-        });
-
-        // Try a simpler fetch as fallback
-        return fetch(`${url}/get-data`)
-          .then((res) => res.json())
-          .then((data) => {
-            const sorted = data.data.sort(
-              (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-            );
-            setSubmissions(sorted);
-            setFiltered(sorted);
-          })
-          .catch((fallbackErr) => {
-            console.error("❌ Fallback fetch also failed:", fallbackErr);
-          })
-          .finally(() => {
-            setLoading(false);
-          });
+        if (err.message === "Unauthorized") return;
+        setLoading(false);
       });
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (adminToken) fetchData();
+    else setLoading(false);
+  }, [adminToken]);
 
   useEffect(() => {
     const filteredData = submissions.filter((sub) => {
@@ -169,6 +164,60 @@ const AdminDashboard = () => {
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (!tokenInput.trim()) {
+      setAuthError("Please enter the admin token.");
+      return;
+    }
+    sessionStorage.setItem("adminToken", tokenInput.trim());
+    setAdminToken(tokenInput.trim());
+    setAuthError("");
+    setTokenInput("");
+  };
+
+  // Show login gate if no token is present
+  if (!adminToken) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+        <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
+          <div className="flex justify-center mb-6">
+            <img
+              src="/images/verge-logo.png"
+              alt="Logo"
+              className="h-10 w-auto object-contain"
+            />
+          </div>
+          <h2 className="text-xl font-bold text-gray-800 text-center mb-1">
+            Admin Access
+          </h2>
+          <p className="text-sm text-gray-500 text-center mb-6">
+            Enter your admin token to continue.
+          </p>
+          <form onSubmit={handleLogin} className="space-y-4">
+            <input
+              type="password"
+              placeholder="Admin token"
+              value={tokenInput}
+              onChange={(e) => setTokenInput(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              autoComplete="current-password"
+            />
+            {authError && (
+              <p className="text-red-600 text-sm">{authError}</p>
+            )}
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+            >
+              Access Dashboard
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
