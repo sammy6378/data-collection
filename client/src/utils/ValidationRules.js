@@ -75,6 +75,18 @@ export const fileValidation = {
   validate: {
     lessThan5MB: (files) =>
       files?.[0]?.size < 5 * 1024 * 1024 || "File must be under 5MB",
+    allowedType: (files) => {
+      const allowed = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ];
+      return (
+        !files?.[0] ||
+        allowed.includes(files[0].type) ||
+        "Only PDF, DOC, or DOCX files are allowed"
+      );
+    },
   },
 };
 
