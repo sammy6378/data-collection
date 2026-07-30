@@ -1,0 +1,4 @@
+# Handover artifacts contain staff PII (names, CV links) and should not be
+# committed to version control.
+/handover/
+handover-package-*.zip
